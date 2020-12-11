@@ -1,0 +1,590 @@
+
+#include "simple.h"
+#include "graph.h"
+#include "stack.h"
+#define NANO 1000000000
+#define THRESHOLD 50
+
+#define DEBUG 0
+
+typedef struct simple_edge {
+	int v1, v2;
+	int position;} s_edge_t;
+	
+typedef struct rep_node{
+  int v;
+  int n_children;
+  int n_st_size; /* size of the piece of the small sub tree that it represents*/
+  int n_gt_size; /* size of whole sub tree of the tree rooted at v, could be larger than n_st_size if has other rep as
+  child*/
+  int parent;
+  int local_dfs_number;
+  int global_start;
+  int * children; 
+  s_edge_t *tour;
+} rep_t;
+
+
+/* A balanced breadth-first search*/
+int span_gw_euler(V* graph,int nVertices,THREADED)
+{
+#define S_POINTS (THREADS*THREADS*THREADS*2)
+#define MYCOLOR (MYTHREAD+1)
+
+  hrtime_t start,end;
+  double interval,power;
+
+  int first_time, work_to_steal,myroot,b,start_sr,start_sl;
+  int top,count,bottom=-1,path_top=-1,path_bottom=-1;
+  int i,j,k,p,l,v,u,s,n,root,walks,r,counter=0,visited,neighbor,ret=0,n_neighbors,n_rep,add_n;
+  
+  int ** stack_M, **top_M, **bottom_M,*stack,* finished,* path_stack,* count_M,*color;
+  int * DFS_order, *Post_order,*Post_visited;
+  
+  unsigned int seed=MYCOLOR;
+  s_edge_t * Tour;
+  rep_t * Rep_tree;
+
+  stack_M = node_malloc(THREADS*sizeof(int *),TH);
+  top_M = node_malloc(THREADS*sizeof(int *),TH);
+  bottom_M=node_malloc(THREADS*sizeof(int *),TH);
+  
+  stack_M[MYTHREAD]=malloc(nVertices*sizeof(int));
+  stack=stack_M[MYTHREAD];
+  top_M[MYTHREAD]=&top;
+  bottom_M[MYTHREAD]=&bottom;
+  count_M=node_malloc(THREADS*sizeof(int),TH);
+
+  color=node_malloc(sizeof(int)*nVertices,TH); 
+
+  pardo(i,0,nVertices,1){
+    color[i]=0;
+  }
+  end=gethrtime();
+  interval=end-start;
+  on_one printf("The time used for setting up is %f \n",interval/NANO);
+
+  start = gethrtime();
+   
+  bottom=-1;
+  top=-1;
+  count=0;
+
+  node_Barrier();
+
+  seed=gethrtime()/(MYTHREAD+1)+MYTHREAD;
+  if(ret==0) root=(rand_r(&seed)%nVertices);
+  root = 0;
+  
+  
+  /*lets select a point to start in the graph*/
+  on_one_thread {
+    color[root]=MYCOLOR;
+    graph[root].parent=root;
+    myroot=root;
+    j=0;
+    push(myroot,stack_M[j],top_M[j]);
+    j=(j+1)%THREADS;
+    i=0;
+    for(i=0;i<S_POINTS;i++)
+    {
+		n_neighbors=graph[myroot].n_neighbors;
+		r=rand_r(&seed);
+		if(r%2==0){
+	  	for(r=0;r<n_neighbors;r++)
+	    {
+	      visited++;
+	      n=graph[myroot].my_neighbors[r];
+		  		 
+	      if(color[n]==0){
+		  	graph[myroot].is_tree_edge[r]=1;
+		  	graph[n].parent=myroot;
+		  	color[n]=MYCOLOR;
+		  	myroot=n;
+		  	count++;
+		  	push(myroot,stack_M[j],top_M[j]);
+		  	/*printf("sub tree : %d \n",myroot);*/
+		  	j=(j+1)%THREADS;
+		  	break;
+	    	} 
+	 	}
+	    if(r==n_neighbors){
+	    	r=(rand_r(&seed)%n_neighbors);
+	    	myroot=graph[myroot].my_neighbors[r];
+	  	}
+		}
+	 	else {
+	  		for(r=n_neighbors-1;r>=0;r--)
+	    	{
+	      		visited++;
+	      		n=graph[myroot].my_neighbors[r];
+	      		if(color[n]==0){
+				graph[myroot].is_tree_edge[r]=1;
+				graph[n].parent=myroot;
+				color[n]=MYCOLOR;
+				myroot=n;
+				count++;
+				push(myroot,stack_M[j],top_M[j]);
+				/*printf("sub tree : %d \n",myroot);*/
+				j=(j+1)%THREADS;
+				break;
+	     	 }     
+	    	}
+	  		if(r<0){
+	    		r=(rand_r(&seed)%n_neighbors);
+	    		myroot=graph[myroot].my_neighbors[r];
+	  		}
+		}		
+      }
+    end=gethrtime();
+    interval=end-start;
+  }
+	       
+  node_Barrier();
+  on_one printf("Now walking...\n");
+  
+  start=gethrtime();
+  first_time=1;
+  work_to_steal=0;
+  start_sr=MYTHREAD; /*when I am out of work, where do i start to search. r towards right, l towards left*/
+  start_sl=MYTHREAD;
+  
+  while(first_time || work_to_steal)
+  {
+      /*if(work_to_steal) printf("stealing work\n");*/
+      while(!is_empty( stack, &top, &bottom))
+	  {
+	    n=pop(stack,&top,bottom);
+	    if(n==-1){
+	      printf("THREAD %d:stack overflow\n",MYTHREAD);
+	      bottom=-1;
+	      top=-1;
+	      break;
+	    }
+	    visited+=graph[n].n_neighbors;
+	    for(i=0;i<graph[n].n_neighbors;i++)
+	    {
+	      neighbor=graph[n].my_neighbors[i];
+	      if(color[neighbor]==0) {/*found new frontier*/
+			graph[n].is_tree_edge[i]=1;  /* in fact this records the number of children I have*/
+		    color[neighbor]=1;
+		    graph[neighbor].parent=n;
+		    push(neighbor,stack,&top);
+		    count++;
+	      }
+	    } 
+	  }
+      /*printf("Thread %d:done with this stack, current count is %d \n", MYTHREAD, count);*/
+
+      if(first_time) first_time=0;
+      work_to_steal=0;
+      if(MYTHREAD%2==0)
+	  {
+	    for(j=0;j<THREADS;j++)
+	    {
+	      i=(j+start_sr)%THREADS; /*start searching in circular from my neighbor*/
+	      if(i==MYTHREAD) continue;
+
+	      n=*(top_M[i]);
+	      b=*(bottom_M[i]);	
+	      if(n-b<THRESHOLD) continue;	      	       
+	      if(count>nVertices/THREADS) /*I did my share*/
+		     r=b+(n-b)/THREADS;
+	      else r=b+max((n-b)/THREADS,min(nVertices/THREADS-count,(n-b)*3/4));
+	      /*printf("Thread%d: thread %d's stack is %d tall\n",MYTHREAD,i,n-b);*/
+	      if(r<(*top_M[i])) {
+		   (*bottom_M[i])=max(r-1,-1);
+		   /*printf("THREAD %d: I am taking %d elements\n",MYTHREAD, r-b);*/
+		   work_to_steal=1;		 
+		   while((r--)>max(0,b))
+		     push(stack_M[i][r],stack,&top);
+		   break;		
+	      }
+	    }
+	} else{
+	  for(j=THREADS-1;j>0;j--)
+	    {
+	      i=(j+start_sl)%THREADS;
+	      if(i==MYTHREAD) continue;
+	      n=*(top_M[i]);
+	      b=(*bottom_M[i]);
+	      if(n-b<THRESHOLD) continue;	     
+	      /*printf("Thread%d: thread %d's stack is %d tall\n",MYTHREAD,i,n-b);*/
+	      if(count>nVertices/THREADS) /*I did my share*/
+		r=b+(n-b)/THREADS;
+	      else r=b+max((n-b)/THREADS,min(nVertices/THREADS-count,(n-b)*3/4));
+	      if(r<(*top_M[i])) {
+		(*bottom_M[i])=max(r-1,-1);
+		/*printf("THREAD %d: I am taking %d elements\n",MYTHREAD, r-b);*/
+		work_to_steal=1;
+		while((r--)>max(b,0))
+		  push(stack_M[i][r],stack,&top);
+		break;
+	      } 
+	    }
+	}
+      start_sr=(start_sr+1)%THREADS;
+      start_sl=(start_sl-1+THREADS)%THREADS;
+
+    }
+  count_M[MYTHREAD]=count;
+  end=gethrtime();
+  interval=end-start;
+  printf("THREAD %d: I AM DONE..., time used: %f\n",MYTHREAD,interval/1000000000);
+  node_Barrier();
+  printf("Thread %d count is %d, visited is %d\n",MYTHREAD, count,visited);  
+
+  on_one_thread{
+    int max=0, min=nVertices;
+    for(i=0;i<THREADS;i++)
+      {
+	if(count_M[i]>max) max=count_M[i];
+	if(count_M[i]<min) min=count_M[i];
+      }
+    printf("METRICS===span_gw:The difference between counts is %d\n",max-min);
+  }
+  node_Barrier();
+
+
+#if 0
+  /* do not clean up the mislabeled is_tree_edge, do it in the local DFS search*/
+  start = gethrtime();
+  /* to clean up the mislabeled is_tree_edge because there might be race conditions*/ 
+  pardo(i,0,nVertices,1)
+  {
+  	for(j=0;j<graph[i].n_neighbors;j++)
+		if( graph[i].is_tree_edge[j] && graph[graph[i].my_neighbors[j]].parent!=i) 
+			graph[i].is_tree_edge[j]=0;
+#if DEBUG
+	printf("%d -> %d\n", i,graph[i].parent);  	
+#endif
+  
+  }
+  node_Barrier();
+  end = gethrtime();
+  interval = end-start;
+  on_one printf("METRICS: time to set up correct children is %f \n", interval/NANO);
+#endif
+  
+  
+  /* Now lets build a euler-tour for the found spanning tree*/ 
+  p = THREADS;
+#if DEBUG
+  p=1;
+#endif
+  
+  s = p*THREADS;
+  
+  Rep_tree = node_malloc(sizeof(struct rep_node)*(s+1),TH);
+  
+  pardo(i,0,s+1,1)
+  {
+  	Rep_tree[i].n_children = 0;
+	Rep_tree[i].children = malloc(sizeof(int)*(s+1));
+	Rep_tree[i].global_start=0;
+  	Rep_tree[i].n_st_size=0;
+  	Rep_tree[i].parent=i;
+  	Rep_tree[i].local_dfs_number=0;
+  }
+  
+  path_stack = malloc(sizeof(int)*nVertices/THREADS);
+  
+  /* each processor chooses p non-leaf vertices, pathological case: not enough non-leaves
+  vertices to choose. Wouldn't be likely if there are many vertices
+  */
+  
+  start = gethrtime();	
+  pardo(n,0,s,1) 
+  {
+    i= nVertices*n/(THREADS*p);
+    k=0;
+    for(j=0;j<graph[i].n_neighbors;j++)
+	  if(graph[i].is_tree_edge[j]==1) k++;
+	while(k==0 ){
+		k=0;
+		i++;
+		for(j=0;j<graph[i].n_neighbors;j++)
+	  		if(graph[i].is_tree_edge[j]==1) k++;
+	}
+	graph[i].v_attribute=n; /* label this as a rep vertex, and also at the same time show which rep it is*/
+	Rep_tree[n].v=i;
+  }
+  node_Barrier();
+  
+  n_rep=s;
+  if(graph[root].v_attribute==-1) {
+  	graph[root].v_attribute=s;
+  	Rep_tree[s].v=root;
+	n_rep++;
+  }
+  node_Barrier();
+  
+  /* do local depth-first search */
+  Tour = malloc(sizeof(s_edge_t)* 2*nVertices);
+  pardo(n,0,n_rep,1){
+  	v=Rep_tree[n].v;
+	r=v;
+#if DEBUG
+	printf("Thread %d: my sub tree starts at %d\n", MYTHREAD, v);
+#endif
+
+	top=-1;
+	bottom=-1;
+	push(v,stack,&top);
+	l=0; /* for local length */
+	Rep_tree[n].n_st_size=0;
+	while(!is_empty( stack, &top, &bottom))
+	{
+		v=pop(stack,&top,bottom);
+		if(v==-1) printf("stack overflow\n");
+#if 0
+		printf(" pop out %d \n",v);
+#endif		
+		if(l!=0){
+			Tour[l-1].v1=graph[v].parent;
+			Tour[l-1].v2=v;
+			Tour[l-1].position=l-1;
+		}
+		Rep_tree[n].n_st_size++;
+			
+		if(graph[v].v_attribute!=-1 && v!=r){ /* found a rep*/
+			Rep_tree[graph[v].v_attribute].local_dfs_number= l;
+			Rep_tree[graph[v].v_attribute].parent=n;
+			Rep_tree[n].children[Rep_tree[n].n_children++]= graph[v].v_attribute;/* setup the rep tree relation*/
+		} else{
+			for(i=0;i<graph[v].n_neighbors;i++)
+			{
+				if(!graph[v].is_tree_edge[i]) continue;
+				neighbor=graph[v].my_neighbors[i];
+				if(graph[neighbor].parent!=v){
+					graph[v].is_tree_edge[i]=0;
+					continue;
+				}
+	      		if(neighbor!=graph[v].parent) {
+		    		push(neighbor,stack,&top);
+	      		}
+			}
+		}
+		l++;
+		if(is_empty(stack,&top,&bottom) || graph[stack[top]].parent!=v){ /*back track*/
+			if(l!=0){
+				Tour[l-1].v1=v;
+				Tour[l-1].v2=graph[v].parent;
+				Tour[l-1].position=l-1;
+			}
+			l++;
+			while(!is_empty(path_stack,&path_top,&path_bottom) &&
+			(is_empty(stack,&top,&bottom) ||
+			path_stack[path_top]!=graph[stack[top]].parent)) {
+				u=pop(path_stack,&path_top,path_bottom);
+				if(l!=0 && !is_empty(path_stack,&path_top,&path_bottom)){
+					Tour[l-1].v1=u;
+					Tour[l-1].v2=path_stack[path_top];
+					Tour[l-1].position=l-1;
+				}
+				l++;
+			}
+		} else push(v,path_stack,&path_top); /* keep track of the current path */
+	}
+	
+	Rep_tree[n].tour=malloc(sizeof(s_edge_t)*l);
+	for(i=0;i<l-1;i++){
+		Rep_tree[n].tour[i]=Tour[i];
+		
+#if DEBUG
+		printf(" THREAD %d: <%d,%d > \n", MYTHREAD,Tour[i].v1,Tour[i].v2);
+#endif
+    }
+  }
+  node_Barrier();  
+  end = gethrtime();
+  interval = end -start;
+  on_one printf("Time used to do local DFS is %f s\n", interval/NANO);
+  
+  /* process the Rep_tree structure. First we do a depth-first search of the Rep_tree, and 
+     list the rep vertices in that order. For each Rep vertex we want to find out where is its starting location for the 
+	 euler tour of the subtree.
+	 If in the list my pred is my parent, then my starting position is pred's start+ local_length
+	 Else my start is my pred's start+ pred's size(to be exact, 2(n_st_size-1))+local_length */
+  
+  on_one{
+
+	start = gethrtime();
+	
+	#if DEBUG
+	printf("\n post-order:\n");
+#endif
+	
+	/* find the post ordering of the rep vertices, reuse the piece of memory of DFS_order.
+	We use the post ordering of the rep_tree to find n_gt_size. Probably we don't need a very efficient impl for this*/
+	Post_order = malloc(sizeof(int)*n_rep); /* shows a sequence of vertices in post ordering*/
+	Post_visited=malloc(sizeof(int)*n_rep);
+	for(i=0;i<n_rep;i++)
+		Post_visited[i]=0;
+		
+	n = graph[root].v_attribute; /*root*/
+	top = -1;
+	bottom =-1;
+	i=0;
+	j=0;
+	push(n,stack,&top);
+	while(!is_empty( stack, &top, &bottom))
+	{
+		v = stack[top];
+		k=0;
+		for(i=Rep_tree[v].n_children-1;i>=0;i--)
+			if(!Post_visited[Rep_tree[v].children[i]]){
+				push(Rep_tree[v].children[i],stack,&top);
+				k++;
+		}
+		if(k==0) {
+			v=pop(stack,&top,bottom);
+#if DEBUG
+			printf("%d - ", Rep_tree[v].v);
+#endif
+			Post_visited[v]=1;
+			Post_order[j++]=v;
+			
+		}	
+		
+	}
+	
+#if DEBUG 
+	printf("\n");
+#endif
+
+/* set n_gt_size */	
+	for(i=0;i<n_rep;i++)
+	{
+		Rep_tree[Post_order[i]].n_gt_size=Rep_tree[Post_order[i]].n_st_size;
+		for(k=0;k<Rep_tree[Post_order[i]].n_children;k++)
+			Rep_tree[Post_order[i]].n_gt_size+=(Rep_tree[Rep_tree[Post_order[i]].children[k]].n_gt_size-1);
+#if DEBUG
+		v = Rep_tree[Post_order[i]].v;
+		printf("[%d].n_gt_size = %d,[%d].n_st_size =%d",v,Rep_tree[Post_order[i]].n_gt_size,v,Rep_tree[Post_order[i]].n_st_size);		
+#endif
+	}
+  
+    /* find the DFS ordering of the rep vertices, e.g., DFS_order[0] points to the
+	root */
+#if DEBUG
+	printf("\nDFS_order:\n");
+#endif
+
+  	DFS_order = malloc(sizeof(struct rep_node)*n_rep);
+    n = graph[root].v_attribute; /*root*/
+	top = -1;
+	bottom =-1;
+	i=0;
+	push(n,stack,&top);
+	while(!is_empty( stack, &top, &bottom))
+	{
+		v = pop(stack,&top,bottom);
+		DFS_order[i++]=v;
+#if DEBUG
+		printf("%d - ", Rep_tree[v].v);
+#endif
+		
+		for(k=Rep_tree[v].n_children-1;k>=0;k--)
+			if(Rep_tree[v].children[k]!=v) push(Rep_tree[v].children[k],stack,&top);
+	}
+	
+#if DEBUG
+	printf("\n");
+#endif
+	
+	/* compute the starting position for each rep_vertex */
+	
+	Rep_tree[DFS_order[0]].global_start =0;
+	start = 0;
+	
+	for(i=1;i< n_rep;i++){
+		if( Rep_tree[DFS_order[i]].parent==DFS_order[i-1] ) {
+			Rep_tree[DFS_order[i]].global_start +=
+			(Rep_tree[DFS_order[i-1]].global_start+Rep_tree[DFS_order[i]].local_dfs_number);
+		} else {
+			v = Rep_tree[DFS_order[i]].parent;
+			for(j=0;j<Rep_tree[v].n_children;j++)
+				if(Rep_tree[v].children[j]==DFS_order[i]) break;
+		
+Rep_tree[DFS_order[i]].global_start+=(Rep_tree[v].global_start+2*(Rep_tree[Rep_tree[v].children[j-1]].n_gt_size-1)+Rep_tree[DFS_order[i]].local_dfs_number);
+		}
+	}
+	
+#if DEBUG
+	for(i=0;i<n_rep;i++)
+	{
+		v = Rep_tree[DFS_order[i]].v;
+		printf("[%d].global_start=%d,[%d].local_dfs_number=%d\n",v,Rep_tree[DFS_order[i]].global_start,v,Rep_tree[DFS_order[i]].local_dfs_number);		
+	}
+#endif
+
+	
+	
+	free(DFS_order);
+	free(Post_visited);
+	free(Post_order);
+ 	
+	end = gethrtime();
+	interval = end - start;
+	printf("Time used on rep_tree is %f s\n", interval/NANO);
+	
+  }
+  node_Barrier();
+  free(Tour);
+
+  
+  /* Now copy the edges to the appropriate place */
+  node_Barrier();
+  
+  start = gethrtime();
+  Tour = node_malloc(sizeof(s_edge_t)*2*(nVertices-1),TH);
+  pardo(n,0,n_rep,1)
+  {
+    
+  	add_n = Rep_tree[n].global_start;
+  	for(i=0;i<(Rep_tree[n].n_st_size-1)*2;i++)
+	{
+		Rep_tree[n].tour[i].position+=add_n;
+	}
+	
+	for(k=0;k<Rep_tree[n].n_children;k++)
+	{
+		add_n = 2*(Rep_tree[Rep_tree[n].children[k]].n_gt_size-1);
+		for(i=Rep_tree[Rep_tree[n].children[k]].local_dfs_number;i<(Rep_tree[n].n_st_size-1)*2;i++)
+			Rep_tree[n].tour[i].position+=add_n;
+	}
+	
+	for(i=0;i<(Rep_tree[n].n_st_size-1)*2;i++)
+	  Tour[Rep_tree[n].tour[i].position]= Rep_tree[n].tour[i];
+	
+  }
+  node_Barrier();
+  end = gethrtime();
+  interval = end - start;
+  on_one printf("Time used on copying to appropriate location is %f s\n", interval/NANO);
+  
+#if DEBUG
+
+on_one{
+	for(i=0;i<2*(nVertices-1);i++)
+		printf(" <%d,%d> \n", Tour[i].v1,Tour[i].v2);
+}
+node_Barrier();
+#endif
+		  
+  node_free(count_M,TH);
+  node_free(color, TH);
+  node_free(stack_M,TH);
+  node_free(top_M,TH);
+  on_one{
+  	for(i=0;i<n_rep;i++){
+		free(Rep_tree[i].children);
+		free(Rep_tree[i].tour);
+	}
+  }
+  node_Barrier();
+  node_free(Rep_tree,TH);
+  free(stack);
+  free(path_stack);
+}

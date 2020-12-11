@@ -1,0 +1,14 @@
+=============
+1
+2
+METRICS:./Data/1m2_leda
+METRICS:Time for rooted_spanning_tree is 4.839677
+METRICS:Time used for spanning tree is 5.471803 s
+METRICS:Time used for label twin edges is 0.989939 s
+METRICS:Time used for pick_tree edges is 1.111704 s
+METRICS: time used for sorting is 12.433113 s
+METRICS:Time used for constuct euler path is 14.500070 s
+METRICS:Time used for rooting tree is 1.647861 s
+METRICS:Time for spanning_tree+euler_tour is 23.721680
+4
+6

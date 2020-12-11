@@ -1,0 +1,482 @@
+#include <sys/types.h>
+#include "simple.h"
+#include "graph.h"
+#include "listrank.h"
+
+#define NANO 1000000000
+
+E* span_gw_euler(V* graph,int nVertices,THREADED);
+void Euler_scan_size_tree(int *Parent,int * Size,E* Tour,int n_edges,THREADED);
+void Euler_scan_preorder(int *Parent,int * Preorder,E* Tour,int n_edges,THREADED);
+E* filter_edges(E* El, int n_vertices, int n_edges, int * n_c_edges,THREADED);
+E* filter_edges_gw(V* G, int * parent1,int n_vertices, int * n_c_edges,THREADED);
+E* filter_edges_gw_nolock(V* G, int * parent1,int n_vertices, int * n_c_edges,THREADED);
+/* still the tarjan viskin algorithm. Use the rooted spanning tree to euler tour approach*/
+
+int bicc_filter(E* El, V* G, int n_vertices, int n_edges,THREADED)
+{
+  int i,t,j,u,v,N,k,n_c_edges;
+  int *Low, *High,*Parent,*Size,* Preorder,* D,*K,tree_edges,logn,opt,l,s;
+  hrtime_t start,end, s1,t1;
+  double interval,total=0;
+  long seed;
+  E* El_tmp, *final_tour,*critical_L;
+  
+  pardo(i,0,n_vertices,1)
+  	G[i].v_attribute=-1;
+  node_Barrier();
+  	
+  s1 = gethrtime();
+  final_tour = span_gw_euler(G,n_vertices,TH);
+  node_Barrier();
+  t1 = gethrtime();
+  interval=t1-s1;
+  on_one printf("METRICS1: Time for span_gw_euler is %f\n",interval/NANO);
+  
+  tree_edges = 2*(n_vertices-1);
+  logn = (int) log(n_vertices);
+  
+  K=(int*) node_malloc(sizeof(int)*THREADS,TH);
+  Parent = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  Low = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  High = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  Preorder = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  Size = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  El_tmp = malloc(sizeof(E)*n_edges);
+  
+  pardo(i,0,n_vertices,1){
+  	Parent[i]=G[i].parent;
+	Preorder[i]=0;
+	Size[i]=0;
+  }
+  
+  s1 = gethrtime();
+  node_Barrier();
+
+  
+  pardo(i,0,n_edges,1)
+  {
+  	if(Parent[El[i].v1]==El[i].v2 || Parent[El[i].v2]==El[i].v1) 
+		El[i].workspace=1;
+	
+  }
+  t1 = gethrtime();
+  interval=t1-s1;
+  on_one printf("METRICS: Time for labeling tree edge in edge list is %f\n",interval/NANO);  
+  node_Barrier();
+
+#if 0  
+  s1 = gethrtime();
+  critical_L = filter_edges(El, n_vertices, n_edges, &n_c_edges,TH);
+  on_one printf("n_c_edges=%d\n", n_c_edges);
+  t1 = gethrtime();
+  interval=t1-s1;
+  on_one printf("METRICS1: filtering edges %f\n",interval/NANO);  
+  node_Barrier();
+#endif
+
+#if 1 
+  s1 = gethrtime();
+  critical_L = filter_edges_gw_nolock(G, Parent,n_vertices, &n_c_edges,TH);
+  on_one printf("METRICS: n_c_edges=%d\n", n_c_edges);
+  t1 = gethrtime();
+  interval=t1-s1;
+  on_one printf("METRICS1: time for filtering edges %f\n",interval/NANO);  
+  node_Barrier();
+#endif
+  
+  start = gethrtime();
+  s1 = gethrtime();
+  Euler_scan_preorder(Parent,Preorder,final_tour,tree_edges,TH);
+  t1 = gethrtime();
+  node_Barrier();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for preorder tree is %f s\n", interval/NANO);
+  
+  node_Barrier();
+  s1 = gethrtime();
+  Euler_scan_size_tree(Parent,Size,final_tour,tree_edges,TH);
+  node_Barrier();
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for size tree is %f s\n", interval/NANO);
+  interval = t1 - start;
+  on_one printf("METRICS1:Time used for tree computation is %f s\n", interval/NANO);
+  
+ #if 0 
+  s1 = gethrtime();
+  Euler_get_lowhigh(El,Parent,Preorder,n_vertices,n_edges,0,Low,High, TH);
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for Euler_get_lowhigh is %f s\n", interval/NANO);
+ #endif
+ 
+ #if 1
+  s1 = gethrtime();
+  Euler_get_lowhigh_filter(critical_L,Parent,Preorder,n_vertices,n_c_edges,0,Low,High, TH);
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS1:Time used for Euler_get_lowhigh_filter is %f s\n", interval/NANO);
+#endif
+  
+  s1 = gethrtime();
+  k=0;
+  /*
+  pardo(i,0,n_c_edges,1)
+  {
+  	if(Preorder[critical_L[i].v2]<Preorder[critical_L[i].v1]) {
+		El_tmp[k++]=critical_L[i];
+		El_tmp[k].v2=critical_L[i].v1;
+		El_tmp[k].v1=Parent[critical_L[i].v1];
+  		k++;
+	}
+	if(Preorder[critical_L[i].v2]+Size[critical_L[i].v2] <=Preorder[critical_L[i].v1]) {
+		El_tmp[k].v1=critical_L[i].v1;
+		El_tmp[k].v2=Parent[critical_L[i].v1];
+		k++;
+		El_tmp[k].v1=critical_L[i].v2;
+		El_tmp[k].v2=Parent[critical_L[i].v2];
+		k++;
+	}
+  }*/
+   
+  pardo(i,0,n_c_edges,1)
+  {
+  	El_tmp[k++]=critical_L[i];
+  }
+  
+  pardo(i,0, tree_edges,1)
+  {
+	if(final_tour[i].v2!=0 && final_tour[i].v2==Parent[final_tour[i].v1]  ) {
+  		u = final_tour[i].v1;
+		v= final_tour[i].v2;
+		if(Low[u]<Preorder[v] || High[u]>=Preorder[v]+Size[v]){
+			El_tmp[k++]=final_tour[i];
+			El_tmp[k].v1=v;
+			El_tmp[k].v2=Parent[v];
+			k++;
+		}
+	}
+  }
+  j = node_Reduce_i(k,SUM,TH);
+  on_one printf("METRICS: number of comp edges got is %d\n", j);
+  t1 = gethrtime();
+  interval = t1 - s1;
+  on_one printf("METRICS1: time for get comp edges %f s\n", interval/NANO);
+  
+  node_Barrier();
+  
+  s1 = gethrtime(); 
+  connected_comp(El_tmp,n_vertices,k,TH);
+  end = gethrtime();
+  interval = end - s1;
+  interval = interval /NANO;
+  on_one printf("METRICS1: connected_comp is %f s\n", interval);
+
+  node_free(Parent,TH);
+  node_free(Size,TH);
+  node_free(Preorder,TH);
+  node_Barrier();
+  node_free(Parent,TH);
+  node_free(Low,TH);
+  node_free(High,TH);
+  node_free(K,TH);
+  node_free(critical_L,TH);
+  node_free(final_tour,TH);
+  free(El_tmp);
+  
+}
+
+
+E* filter_edges(E* El, int n_vertices, int n_edges, int * n_c_edges,THREADED)
+{
+	int i,j, u,v,change,count = 0;
+	int * D, * lock_array, * done, *buff;
+	E* critical_L;
+	hrtime_t start, end;
+	double interval;
+	
+	D = node_malloc(sizeof(int)*n_vertices,TH);
+	lock_array = node_malloc(sizeof(int)*n_vertices,TH);
+	done = node_malloc(sizeof(int)*n_vertices,TH);
+	buff = node_malloc(sizeof(int)*n_edges,TH);
+	pardo(i,0,n_vertices,1){
+		D[i]=i;
+		lock_array[i]=0;
+		done[i]=0;
+	}
+	
+	node_Barrier();
+	
+	start = gethrtime();
+	while(1)
+	{
+		change = 0;
+		pardo(i,0,n_edges,1)
+		{
+			if(El[i].workspace==1) continue;
+			u = El[i].v1;
+			v = El[i].v2;
+			if(D[v]<D[u] && D[u]==D[D[u]] && done[D[u]]==0)
+         	{
+             	spin_lock(&(lock_array[D[u]]), MYTHREAD+1);
+                if(done[D[u]]==0){
+                	done[D[u]]=1;
+                	D[D[u]]=D[v];
+					spin_unlock(&(lock_array[D[u]]));
+                	change=1;
+                    El[i].workspace=2;	
+             	}else spin_unlock(&(lock_array[D[u]]));
+            }
+    	}
+		node_Barrier();
+		change = node_Reduce_i(change, MAX, TH);
+		if(change ==0) break;
+		
+		pardo(i,0,n_vertices,1)
+			while(D[i]!=D[D[i]]) D[i]=D[D[i]];
+		node_Barrier();
+	}
+	end = gethrtime();
+	interval = end - start;
+	on_one printf("Time used to pick the edges is %f s\n", interval/NANO);
+	
+	pardo(i,0,n_edges,1)
+		if(El[i].workspace==2) buff[i]=1;
+		else buff[i]=0;
+	
+	node_Barrier();
+	prefix_sum(buff,n_edges,TH);
+	node_Barrier();
+	
+	count = buff[n_edges-1];
+	critical_L = node_malloc(sizeof(E)*count*2,TH);
+	pardo(i,0,n_edges,1)
+	{
+		if(i==0 && buff[i]==1) critical_L[buff[i]-1]=El[i];
+		else if(i!=0 && buff[i-1]!=buff[i]) critical_L[buff[i]-1]=El[i]; 
+	}
+	node_Barrier();
+	
+	/* make sure two anti-parallel arcs are in the list, can be optimized later*/
+	pardo(i,0,count,1)
+	{
+		critical_L[count+i].v1=critical_L[i].v2;
+		critical_L[count+i].v2=critical_L[i].v1;
+	}
+	*n_c_edges = 2*count;
+			
+	node_free(D,TH);
+	node_free(lock_array,TH);
+	node_free(done,TH);
+	node_free(buff,TH);
+	return(critical_L);
+}
+
+E* filter_edges_gw(V* G, int * Old_parent,int n_vertices, int * n_c_edges,THREADED)
+{
+	int i,j,k,u,v,count =0,bottom=-1;
+	int *color, *stack, *Parent, *lock_array, *buff,top=-1,s,count_s;
+	int my_root,v1,v2, ** M, *K;
+	E *critical_L,*temp_L;
+	hrtime_t start, end;
+	double interval;
+	
+	color = node_malloc(sizeof(int)*n_vertices,TH);
+	stack = malloc(sizeof(int)*n_vertices);
+	lock_array = node_malloc(sizeof(int)*n_vertices,TH);
+	M = malloc(sizeof(int*)*THREADS);
+	K = node_malloc(sizeof(int)*THREADS,TH);
+	temp_L = malloc(sizeof(E)*n_vertices);
+	for(i=0;i<THREADS;i++)
+		M[i]=malloc(sizeof(int)*THREADS);
+		
+	pardo(i,0,n_vertices,1){
+		color[i]=0;
+		lock_array[i]=0;
+	}
+	
+	node_Barrier();
+	
+	start = gethrtime();
+	pardo(i,0,n_vertices,1)
+	{
+		spin_lock(&lock_array[i],MYTHREAD+1);
+		if(color[i]==0){
+			color[i]=MYTHREAD+1;
+			spin_unlock(&lock_array[i]);
+			
+			for(j=0;j<THREADS;j++)
+				for(k=0;k<THREADS;k++)
+					M[j][k]=0;
+					
+			push(i,stack,&top);
+			while(!is_empty(stack,&top,&bottom))
+			{
+				u = pop(stack,&top,bottom);
+				for(k=0; k< G[u].n_neighbors; k++)
+				{
+					v = G[u].my_neighbors[k];
+					spin_lock(&lock_array[v],MYTHREAD+1);
+					
+					if(color[v]==0 && G[u].is_tree_edge[k]==0 && Old_parent[u]!=v) {
+						color[v]=MYTHREAD+1;
+						spin_unlock(&lock_array[v]);
+						temp_L[count].v1=u;
+						temp_L[count].v2=v;
+						count++;
+						
+						push(v,stack,&top);
+					} else{		
+						spin_unlock(&lock_array[v]);			
+						if(color[v]!=0 && G[u].is_tree_edge[k]==0 && Old_parent[u]!=v){
+							if(M[color[v]-1][color[u]-1]==0){
+								M[color[v]-1][color[u]-1]=1;
+								M[color[u]-1][color[v]-1]=1;
+								temp_L[count].v1=u;
+								temp_L[count].v2=v;
+								count++;
+							}
+						
+						}
+						
+					}	
+				}
+			}/*while*/
+			
+		} else spin_unlock(&lock_array[i]);
+	} /*pardo*/
+	node_Barrier();
+	end = gethrtime();
+	interval = end - start;
+	on_one printf("Time used to pick the edges is %f s\n", interval/NANO);
+	
+	K[MYTHREAD]=count;
+	node_Barrier();
+	on_one{
+		for(i=1;i<THREADS;i++)
+			K[i]+=K[i-1];
+	}
+	node_Barrier();
+	if(MYTHREAD==0) k=0;
+	else k=K[MYTHREAD-1];
+	
+	count_s = node_Reduce_i(count,SUM,TH);	
+	critical_L = node_malloc(sizeof(E)*count_s,TH);
+	node_Barrier();
+	
+	for(i=0;i<count;i++)
+		critical_L[k+i]=temp_L[i];
+	
+	node_Barrier();
+	*n_c_edges = count_s;
+	node_free(color,TH);
+	free(stack);
+	node_free(lock_array,TH);
+	for(i=0;i<THREADS;i++)
+		free(M[i]);
+	free(M);
+	node_free(K,TH);
+	free(temp_L);
+	return(critical_L);
+}
+
+E* filter_edges_gw_nolock(V* G, int * Old_parent,int n_vertices, int * n_c_edges,THREADED)
+{
+	int i,j,k,u,v,count =0,bottom=-1;
+	int *color, *stack, *Parent, *buff,top=-1,s,count_s;
+	int my_root,v1,v2, ** M, *K;
+	E *critical_L,*temp_L;
+	hrtime_t start, end;
+	double interval;
+	
+	color = node_malloc(sizeof(int)*n_vertices,TH);
+	stack = malloc(sizeof(int)*n_vertices);
+	M = malloc(sizeof(int*)*THREADS);
+	K = node_malloc(sizeof(int)*THREADS,TH);
+	temp_L = malloc(sizeof(E)*n_vertices);
+	for(i=0;i<THREADS;i++)
+		M[i]=malloc(sizeof(int)*THREADS);
+		
+	pardo(i,0,n_vertices,1){
+		color[i]=0;
+	}
+	
+	node_Barrier();
+	
+	start = gethrtime();
+	pardo(i,0,n_vertices,1)
+	{
+		if(color[i]==0){
+			color[i]=MYTHREAD+1;
+			
+			for(j=0;j<THREADS;j++)
+				for(k=0;k<THREADS;k++)
+					M[j][k]=0;
+					
+			push(i,stack,&top);
+			while(!is_empty(stack,&top,&bottom))
+			{
+				u = pop(stack,&top,bottom);
+				for(k=0; k< G[u].n_neighbors; k++)
+				{
+					v = G[u].my_neighbors[k];
+					
+					if(color[v]==0 && G[u].is_tree_edge[k]==0 && Old_parent[u]!=v) {
+						color[v]=MYTHREAD+1;
+						temp_L[count].v1=u;
+						temp_L[count].v2=v;
+						count++;
+						
+						push(v,stack,&top);
+					} else{				
+						if(color[v]!=0 && G[u].is_tree_edge[k]==0 && Old_parent[u]!=v){
+							if(M[color[v]-1][color[u]-1]==0){
+								M[color[v]-1][color[u]-1]=1;
+								M[color[u]-1][color[v]-1]=1;
+								temp_L[count].v1=u;
+								temp_L[count].v2=v;
+								count++;
+							}
+						
+						}
+						
+					}	
+				}
+			}/*while*/
+			
+		} 
+	} /*pardo*/
+	node_Barrier();
+	end = gethrtime();
+	interval = end - start;
+	on_one printf("Time used to pick the edges is %f s\n", interval/NANO);
+	
+	K[MYTHREAD]=count;
+	node_Barrier();
+	on_one{
+		for(i=1;i<THREADS;i++)
+			K[i]+=K[i-1];
+	}
+	node_Barrier();
+	if(MYTHREAD==0) k=0;
+	else k=K[MYTHREAD-1];
+	
+	count_s = node_Reduce_i(count,SUM,TH);	
+	critical_L = node_malloc(sizeof(E)*count_s,TH);
+	node_Barrier();
+	
+	for(i=0;i<count;i++)
+		critical_L[k+i]=temp_L[i];
+	
+	node_Barrier();
+	*n_c_edges = count_s;
+	node_free(color,TH);
+	free(stack);
+	for(i=0;i<THREADS;i++)
+		free(M[i]);
+	free(M);
+	node_free(K,TH);
+	free(temp_L);
+	return(critical_L);
+}

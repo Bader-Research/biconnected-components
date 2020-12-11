@@ -1,0 +1,99 @@
+#include "graph.h"
+#include "types.h"
+#include "simple.h"
+
+
+int block_cut(V* graph,int nVertices, int s,int *C,int *k)
+/*input: 
+    s: where to start the DFS
+    C: the set of cutting points, will allocat mem for it.
+    k: number of cutting points.
+*/
+{
+
+   int v,w,*S;
+   int i,index1,index2,top=-1;  /*pointer to stack S's top*/
+
+   nodeT *nr,*p,*L; /*array nr, p, and L*/
+
+
+   nr= malloc(nVertices*sizeof(nodeT));
+   p = malloc(nVertices*sizeof(nodeT));
+   L = malloc(nVertices*sizeof(nodeT));
+   C = malloc (nVertices*sizeof(nodeT));
+   S = malloc (nVertices*sizeof(nodeT));
+
+   if(C == NULL || S==NULL || nr==NULL || p==NULL || L==NULL )
+   {
+     if(C) free(C);
+     if(S) free(S);
+     if(nr) free(nr);
+     if(p) free(p);
+     if(L) free(L);
+     return -1;
+   }
+
+   for(i=0;i<nVertices;i++)
+   {
+      nr[i]=-1;
+      p[i]=-1;
+   }
+
+   nr[s]=0;
+   v=s;
+   *k=0;
+   i=0;
+
+   S[++top]=v;
+   do{
+       while(unvisited_edge(graph, visitedE,v,&w,&index1,&index2)){
+		set_visited(visitedE,v,index1,w,index2);
+		if(nr[w]==-1){
+			p[w]=v;i++;nr[w]=i;L[w]=i;
+			S[++top]=w;
+			v=w;
+		} else L[v]=(L[v]<nr[w]) ? L[v]:nr[w] ;
+	} /*end_while*/
+
+	if(p[v]!=s)
+	{ 
+		if(L[v]<nr[p[v]])
+			L[p[v]]=(L[p[v]]<L[v]) ? L[p[v]]:L[v];
+		else {
+			C[(*k)++]=p[v];
+			/*printf("2-connected block found:\n");*/
+			while(S[top]!=v)
+			{
+				/*printf("%d ",S[top]);*/
+				top--;
+			}
+			/*printf("%d ",S[top--]);  this value should be equal to v*/
+			top--; /*if you uncomment the above line, delet this line:)*/	
+			/*printf("%d \n",p[v]);*/
+		}
+	} else {
+		if(unvisited_edge(graph, visitedE,s,&w,&index1,&index2))
+		{	
+			set_visited(visitedE,s,index1,w,index2);
+			C[(*k)+1]=s;
+		}
+		(*k)++;
+		
+		/*printf("2-connected block found:\n");*/
+		while(S[top]!=v)
+		{
+			/*printf("%d ",S[top]);*/
+			top--;
+		}
+		/*printf("%d ",S[top--]);  this value should be equal to v*/
+		top--;/*If you uncomment the above line, delete this line:)*/
+		/*printf("%d \n",s);*/
+	}
+        v=p[v];
+   } while (p[v]!=-1 || unvisited_edge(graph,visitedE,v,&w,&index1,&index2));
+
+   if(nr) free(nr);
+   if(p)  free(p);
+   if(L)  free(L);
+   
+}

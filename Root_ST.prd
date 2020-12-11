@@ -1,0 +1,36 @@
+#
+# WorkShop Project File
+#
+# This file is machine generated, do not modify
+#
+
+projectid "/export/home/cong/work/Root_ST/Root_ST.prd";
+projectver 6.0;
+
+project_t cset_6mHvF9rLSqhnoXlyeyOa = {
+
+    entities = {
+        {
+            name = "<Default> target in /export/home/cong/work/Root_ST:<Default> makefile";
+            type = NONE;
+            builder = Makefile_Builder;
+            options = {
+                Makefile_Builder<command>.value="gmake",
+                Makefile_Builder<dir>.value="/export/home/cong/work/Root_ST";
+            };
+        };
+    };
+
+    gendata = {
+        {
+            tag = projecttype;
+            type = string_t;
+            value ="makefile";
+        },
+        {
+            tag = projectdir;
+            type = string_t;
+            value ="/export/home/cong/work/Root_ST";
+        };
+    };
+};

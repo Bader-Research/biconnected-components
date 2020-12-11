@@ -1,0 +1,147 @@
+ 
+=============
+2
+METRICS: seed is -712456314 
+METRICS:Time used for span-gw: 1.007551
+METRICS===span_gw:The difference between counts is 66788
+METRICS: time to set up correct children is 0.561478 
+METRICS: Thread 0: Time used to do local DFS is 1.205318 s, visited is 589408
+METRICS: Thread 1: Time used to do local DFS is 1.205357 s, visited is 459247
+METRICS: time used on local-dfs search is 1.205357 s
+METRICS: Time used on copying to appropriate location is 0.388901 s
+METRICS: Time for span_gw_euler is 3.180288
+METRICS:Time for rooted_spanning_tree is 12.532986
+METRICS: time for st_euler is 8.094217 s
+METRICS:Time used for spanning tree is 12.409538 s
+METRICS:Time used for label twin edges is 1.046522 s
+METRICS:Time used for pick_tree edges is 1.076861 s
+METRICS: time used for sorting is 12.293394 s
+METRICS:Time used for construct euler path is 14.423039 s
+METRICS:Time used for rooting tree is 1.963415 s
+METRICS:Time for spanning_tree+euler_tour is 30.919633
+4
+METRICS: seed is -712456314 
+METRICS:Time used for span-gw: 0.603474
+METRICS===span_gw:The difference between counts is 440234
+METRICS: time to set up correct children is 0.297902 
+METRICS: Thread 0: Time used to do local DFS is 0.850632 s, visited is 329485
+METRICS: Thread 3: Time used to do local DFS is 0.850688 s, visited is 205183
+METRICS: Thread 2: Time used to do local DFS is 0.850823 s, visited is 235125
+METRICS: Thread 1: Time used to do local DFS is 0.850786 s, visited is 278942
+METRICS: time used on local-dfs search is 0.850823 s
+METRICS: Time used on copying to appropriate location is 0.266646 s
+METRICS: Time for span_gw_euler is 2.065072
+METRICS:Time for rooted_spanning_tree is 6.777482
+METRICS: time for st_euler is 4.455280 s
+METRICS:Time used for spanning tree is 6.426337 s
+METRICS:Time used for label twin edges is 0.582481 s
+METRICS:Time used for pick_tree edges is 0.824427 s
+METRICS: time used for sorting is 6.222759 s
+METRICS:Time used for construct euler path is 7.654459 s
+METRICS:Time used for rooting tree is 1.192577 s
+METRICS:Time for spanning_tree+euler_tour is 16.680559
+6
+METRICS: seed is -712456314 
+METRICS:Time used for span-gw: 0.454060
+METRICS===span_gw:The difference between counts is 222270
+METRICS: time to set up correct children is 0.209540 
+METRICS: Thread 0: Time used to do local DFS is 0.868186 s, visited is 278079
+METRICS: Thread 1: Time used to do local DFS is 0.868437 s, visited is 161721
+METRICS: Thread 3: Time used to do local DFS is 0.868389 s, visited is 176916
+METRICS: Thread 2: Time used to do local DFS is 0.868352 s, visited is 186518
+METRICS: Thread 4: Time used to do local DFS is 0.868268 s, visited is 132164
+METRICS: Thread 5: Time used to do local DFS is 0.868219 s, visited is 113417
+METRICS: time used on local-dfs search is 0.868437 s
+METRICS: Time used on copying to appropriate location is 0.296573 s
+METRICS: Time for span_gw_euler is 1.881943
+METRICS:Time for rooted_spanning_tree is 4.277524
+METRICS: time for st_euler is 3.197831 s
+METRICS:Time used for spanning tree is 4.510913 s
+METRICS:Time used for label twin edges is 0.464394 s
+METRICS:Time used for pick_tree edges is 0.578227 s
+METRICS: time used for sorting is 4.454444 s
+METRICS:Time used for construct euler path is 5.721262 s
+METRICS:Time used for rooting tree is 0.886176 s
+METRICS:Time for spanning_tree+euler_tour is 12.161439
+8
+METRICS: seed is -712456314 
+METRICS:Time used for span-gw: 0.337893
+METRICS===span_gw:The difference between counts is 114893
+METRICS: time to set up correct children is 0.165192 
+METRICS: Thread 0: Time used to do local DFS is 1.026034 s, visited is 276729
+METRICS: Thread 6: Time used to do local DFS is 1.026173 s, visited is 62829
+METRICS: Thread 3: Time used to do local DFS is 1.026058 s, visited is 101220
+METRICS: Thread 4: Time used to do local DFS is 1.026196 s, visited is 122540
+METRICS: Thread 7: Time used to do local DFS is 1.026177 s, visited is 139936
+METRICS: Thread 2: Time used to do local DFS is 1.026309 s, visited is 135894
+METRICS: Thread 5: Time used to do local DFS is 1.026463 s, visited is 82286
+METRICS: Thread 1: Time used to do local DFS is 1.026249 s, visited is 127461
+METRICS: time used on local-dfs search is 1.026463 s
+METRICS: Time used on copying to appropriate location is 0.480281 s
+METRICS: Time for span_gw_euler is 2.068177
+METRICS:Time for rooted_spanning_tree is 3.875079
+METRICS: time for st_euler is 2.629579 s
+METRICS:Time used for spanning tree is 3.158659 s
+METRICS:Time used for label twin edges is 0.363326 s
+METRICS:Time used for pick_tree edges is 0.737035 s
+METRICS: time used for sorting is 3.767615 s
+METRICS:Time used for construct euler path is 4.673687 s
+METRICS:Time used for rooting tree is 0.892216 s
+METRICS:Time for spanning_tree+euler_tour is 9.825403
+10
+METRICS: seed is -712456314 
+METRICS:Time used for span-gw: 0.265194
+METRICS===span_gw:The difference between counts is 57781
+METRICS: time to set up correct children is 0.171949 
+METRICS: Thread 3: Time used to do local DFS is 0.846116 s, visited is 164703
+METRICS: Thread 8: Time used to do local DFS is 0.846316 s, visited is 134445
+METRICS: Thread 9: Time used to do local DFS is 0.846300 s, visited is 65530
+METRICS: Thread 7: Time used to do local DFS is 0.846279 s, visited is 62596
+METRICS: Thread 1: Time used to do local DFS is 0.846338 s, visited is 87466
+METRICS: Thread 0: Time used to do local DFS is 0.846474 s, visited is 105544
+METRICS: Thread 2: Time used to do local DFS is 0.846495 s, visited is 126363
+METRICS: Thread 5: Time used to do local DFS is 0.846520 s, visited is 163128
+METRICS: Thread 6: Time used to do local DFS is 0.846706 s, visited is 71392
+METRICS: Thread 4: Time used to do local DFS is 0.846389 s, visited is 67808
+METRICS: time used on local-dfs search is 0.846706 s
+METRICS: Time used on copying to appropriate location is 0.376132 s
+METRICS: Time for span_gw_euler is 1.726864
+METRICS:Time for rooted_spanning_tree is 3.548585
+METRICS: time for st_euler is 2.457847 s
+METRICS:Time used for spanning tree is 2.960702 s
+METRICS:Time used for label twin edges is 0.315335 s
+METRICS:Time used for pick_tree edges is 0.800278 s
+METRICS: time used for sorting is 2.993958 s
+METRICS:Time used for construct euler path is 3.957917 s
+METRICS:Time used for rooting tree is 0.873551 s
+METRICS:Time for spanning_tree+euler_tour is 8.908235
+12
+METRICS: seed is -712456314 
+METRICS:Time used for span-gw: 0.290174
+METRICS===span_gw:The difference between counts is 81281
+METRICS: time to set up correct children is 0.128893 
+METRICS: Thread 0: Time used to do local DFS is 1.476083 s, visited is 477025
+METRICS: Thread 8: Time used to do local DFS is 1.476376 s, visited is 53405
+METRICS: Thread 4: Time used to do local DFS is 1.476220 s, visited is 52528
+METRICS: Thread 9: Time used to do local DFS is 1.476279 s, visited is 54337
+METRICS: Thread 6: Time used to do local DFS is 1.476361 s, visited is 37323
+METRICS: Thread 2: Time used to do local DFS is 1.476392 s, visited is 59289
+METRICS: Thread 3: Time used to do local DFS is 1.476584 s, visited is 50009
+METRICS: Thread 5: Time used to do local DFS is 1.476591 s, visited is 37085
+METRICS: Thread 7: Time used to do local DFS is 1.476701 s, visited is 60296
+METRICS: Thread 10: Time used to do local DFS is 1.476855 s, visited is 50552
+METRICS: Thread 11: Time used to do local DFS is 1.476858 s, visited is 58112
+METRICS: Thread 1: Time used to do local DFS is 1.476576 s, visited is 59094
+METRICS: time used on local-dfs search is 1.476858 s
+METRICS: Time used on copying to appropriate location is 4.133515 s
+METRICS: Time for span_gw_euler is 6.195183
+METRICS:Time for rooted_spanning_tree is 4.901799
+METRICS: time for st_euler is 3.300981 s
+METRICS:Time used for spanning tree is 3.705912 s
+METRICS:Time used for label twin edges is 0.429118 s
+METRICS:Time used for pick_tree edges is 0.777346 s
+METRICS: time used for sorting is 3.327910 s
+METRICS:Time used for construct euler path is 4.562866 s
+METRICS:Time used for rooting tree is 0.877812 s
+METRICS:Time for spanning_tree+euler_tour is 10.353650
+    

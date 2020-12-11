@@ -1,0 +1,273 @@
+#include <sys/types.h>
+#include "simple.h"
+#include "graph.h"
+#include "my_malloc.h"
+
+#define NANO 1000000000
+#define CHECK 0
+
+V* G;
+E* El;
+int n_edges;
+int initialize_graph_edgelist(V* graph, int n_vertices,E **pEL,int *pn_edge, THREADED);
+ET*  pick_tree_edges(E* EL,int n_edges,THREADED);
+void construct_Euler_path ( ET* treeEL, int n_edges,THREADED);
+void Euler_root_tree(int *Parent,ET* treeEL,int n_edges,THREADED);
+void label_twin_edges(E* EL, V* G, int n_edges, THREADED);
+V* r_graph(int n,int m);
+V* k_graph(int n, int k);
+V* torus(int k);
+
+
+void *SIMPLE_main(THREADED)
+{
+  int i,t,j, n_vertices,N,k,*Parent,logn,opt,l,s;
+  hrtime_t start,end, s1,t1;
+  double interval,total=0;
+  char * input_file;
+  int * D,tree_edges;
+  int * graft_to,*Buff;
+  long seed;
+  ET * treeEL;
+  /*E* Tour;*/
+
+# if 0
+  /*initialize graph from input file */  
+  input_file = THARGV[0];  
+  on_one_thread{
+	t = initialize_graph(input_file,&G,&n_vertices);
+	if(t!=0) exit(0);
+  }
+#endif
+  
+#if 1
+  on_one{
+  	opt = atoi(THARGV[0]);
+	seed = gethrtime();
+	seed = -712456314 ;
+	/*seed =660;*/
+	/*seed=568;*/
+	srand(seed);
+	printf("METRICS: seed is %d \n", seed);
+  	switch(opt){
+  	case 0: n_vertices=atoi(THARGV[1]); n_edges=atoi(THARGV[2]);
+				  G = r_graph(n_vertices,n_edges); break; 
+  	case 1: k=atoi(THARGV[1]); n_vertices=k*k; 
+				  G = torus(k); break;
+  	case 2: n_vertices=atoi(THARGV[1]); k = atoi(THARGV[2]);
+				  G = k_graph(n_vertices,k); break;
+	default: printf("unknown graph type, exit\n"); exit(1);
+  	}
+  }     
+  node_Barrier();
+#endif
+
+  
+  n_vertices=node_Bcast_i(n_vertices,TH); 
+  /*init_mem(sizeof(E)*n_vertices*2*THREADS+1000,TH);
+  Tour = my_malloc(sizeof(E)*n_vertices*2,TH);*/
+  
+#if 1  /*check for repeated edges*/
+  pardo(i,0,n_vertices,1)
+  {
+    for(j=0;j<G[i].n_neighbors;j++)
+	  for(s=j+1;s<G[i].n_neighbors;s++)
+	    if(G[i].my_neighbors[j]==G[i].my_neighbors[s]) 
+			printf("one repeated edge:(%d,%d)\n",i,G[i].my_neighbors[j]);
+  }
+  node_Barrier();
+#endif
+ 
+  pardo(i,0,n_vertices,1)
+     G[i].v_attribute=-1;
+
+#if 0
+  
+  node_Barrier();
+  start = gethrtime();
+  span_gw_euler(G, n_vertices,TH);
+  node_Barrier();
+  end = gethrtime();
+  interval=end-start;
+  on_one printf("METRICS: Time for span_gw_euler is %f\n",interval/NANO);
+#endif
+  
+  Parent = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  Preorder = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  Size = (int *) node_malloc(sizeof(int)*n_vertices,TH);
+  pardo(i,0,n_vertices,1){
+  	Parent[i]=i;
+	Preorder[i]=0;
+	Size[i]=0;
+  }
+  
+  start = gethrtime();
+  initialize_graph_edgelist(G, n_vertices,&El,&n_edges, TH);
+  end = gethrtime();
+  interval=end-start;
+  on_one printf("Time for initialization(graph edge list) is %f, n_edges = %d\n",interval/NANO,n_edges);
+  node_Barrier();
+  tree_edges = 2*(n_vertices-1);
+ 
+
+
+  logn = (int) log(n_vertices);
+#if 0
+  start = gethrtime();
+  graft_to = node_malloc(sizeof(int*)*n_vertices,TH);
+  pardo(i,0,n_vertices,1)
+    graft_to[i]=calloc(logn,sizeof(int));
+  node_Barrier();
+  end = gethrtime();
+  interval=end-start;
+  on_one printf("Time used to allocate graft_to is %f s\n", interval/NANO);  
+#endif
+  
+  graft_to = node_malloc(sizeof(int)*n_vertices,TH);
+  pardo(i,0,n_vertices,1) graft_to[i]=0;
+  Buff = node_malloc(sizeof(int)*n_edges,TH);
+  pardo(i,0,n_edges,1) Buff[i]=0;
+#if 1
+  
+  
+  start = gethrtime();
+  rooted_spanning_tree(Parent,El,n_vertices,n_edges,TH);
+  end = gethrtime();
+  interval=end-start;
+  on_one_thread
+  	printf("METRICS:Time for rooted_spanning_tree is %f\n",interval/NANO);
+  node_Barrier();
+
+
+  pardo(i,0,n_edges,1)
+  	El[i].workspace=0;
+  pardo(i,0,n_vertices,1)
+  	Parent[i]=i;
+  node_Barrier();
+  
+  s1 = gethrtime();
+  st_euler(Parent,El,n_vertices,n_edges,graft_to,Buff,TH);
+  t1 = gethrtime();
+  interval = t1 - s1;
+  on_one printf("METRICS: time for st_euler is %f s\n", interval/NANO);
+  
+  
+#endif
+
+#if 0
+	pardo(i,0,n_vertices,1){
+		while(Parent[i]!=Parent[Parent[i]]) 
+			Parent[i]=Parent[Parent[i]];
+	}
+	node_Barrier();
+	on_one printf("Check results:\n");
+	pardo(i,1,n_vertices,1)
+		if(Parent[i]!=Parent[i-1]) printf("%d wrong\n",i);
+#if 0		
+	pardo(i,0,n_vertices,1)
+		printf("Parent(%d) == %d\n", i,Parent[i]);
+#endif
+		
+	on_one printf("check done for rooted_st\n");
+	node_Barrier();
+#endif	
+
+	
+  pardo(i,0,n_edges,1)
+  	El[i].workspace=0;
+  pardo(i,0,n_vertices,1)
+  	Parent[i]=i;
+  node_Barrier();
+  
+  start = gethrtime();
+  
+  s1 = gethrtime();
+  spanning_tree_CRCW(G,El,n_vertices,n_edges,TH);
+  node_Barrier();
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for spanning tree is %f s\n", interval/NANO);
+  
+#if 1
+  s1 = gethrtime();
+  label_twin_edges(El,G,n_edges,TH);	
+  node_Barrier();
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for label twin edges is %f s\n", interval/NANO);
+  
+
+#if DEBUG
+  on_one {
+  	for(i=0;i<n_edges;i++)
+		printf(" (%d ,%d, %d ) ", El[i].v1,El[i].v2,El[i].workspace);
+	printf("\n");
+	}
+#endif
+
+
+  s1 = gethrtime();
+  treeEL= pick_tree_edges(El,n_edges,TH); 
+  node_Barrier();
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for pick_tree edges is %f s\n", interval/NANO);
+  
+#if DEBUG 
+  on_one {
+  	for(i=0;i<2*(n_vertices-1);i++)
+		printf(" (%d ,%d, %d ) ", treeEL[i].v1,treeEL[i].v2,treeEL[i].workspace);
+	printf("\n");
+	}
+#endif
+
+	
+  s1 = gethrtime();
+  construct_Euler_path (treeEL,tree_edges,TH);
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for construct euler path is %f s\n", interval/NANO);
+
+#if 1
+  
+  node_Barrier();
+  s1 = gethrtime();
+  printf("tree edges is %d \n", tree_edges);
+  Euler_root_tree(Parent,treeEL,tree_edges,TH);
+  t1 = gethrtime();
+  interval = t1-s1;
+  on_one printf("METRICS:Time used for rooting tree is %f s\n", interval/NANO);
+#endif
+  
+  end = gethrtime();
+  interval=end-start;
+  on_one_thread
+  	printf("METRICS:Time for spanning_tree+euler_tour is %f\n",interval/NANO);
+	
+#if CHECK
+	pardo(i,0,n_vertices,1)
+		while(Parent[i]!=Parent[Parent[i]]) Parent[i]=Parent[Parent[i]];
+	node_Barrier();
+	pardo(i,1,n_vertices,1)
+		if(Parent[i]!=Parent[i-1]) printf("%d,%d,%d,wrong results\n",i, Parent[i],Parent[i-1]);
+	node_Barrier();
+	on_one printf("check done for euler tour rooting\n");
+#endif
+#endif
+
+  
+  node_Barrier();
+  on_one_thread{
+	delete_graph(G,n_vertices);
+	printf("delete_graph done\n");
+	if(El) free(El);
+	printf("delete EL done\n");
+  } 
+  /*clear_mem(TH);*/
+  node_free(graft_to,TH);
+  node_Barrier();
+  node_free(Parent,TH);
+  SIMPLE_done(TH);
+}
+
+

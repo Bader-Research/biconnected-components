@@ -1,0 +1,65 @@
+#include "simple.h"
+
+/* this is used for block prefix sum. Based on the idea that just to keep all the threads busy. */
+
+int prefix_sum(int *buff, int n, THREADED)
+{
+  int * result,i;
+
+  result = node_malloc(sizeof(int)*THREADS,TH);
+
+  pardo(i,0,THREADS,1)
+    {
+      result[i]=0;
+    }
+  
+  node_Barrier();
+
+  /*now run prefix-sum on buff*/
+
+  on_thread(MYTHREAD)
+    {
+      if(MYTHREAD!=THREADS-1)
+	{
+	  for(i=1;i<n/THREADS;i++)
+	    buff[(n/THREADS)*(MYTHREAD)+i]+=buff[(n/THREADS)*(MYTHREAD)+i-1];
+	  result[MYTHREAD]=buff[(n/THREADS)*(MYTHREAD)+i-1];
+	} else {
+	  for(i=1;i<n/THREADS+(n-(n/THREADS)*THREADS);i++)
+	    {
+	      buff[(n/THREADS)*(MYTHREAD)+i]+=buff[(n/THREADS)*(MYTHREAD)+i-1];
+	    }
+	  result[MYTHREAD]=buff[(n/THREADS)*(MYTHREAD)+i-1];
+	}
+    }
+	
+
+  node_Barrier();
+  on_one_thread{
+    for(i=1;i<THREADS;i++) result[i]+=result[i-1];
+    for(i=THREADS-1;i>0;i--) result[i]=result[i-1];
+    result[0]=0;
+  } 
+  node_Barrier();
+
+  on_thread(MYTHREAD)
+    {
+      if(MYTHREAD!=THREADS-1)
+	{
+	  if(MYTHREAD!=0)
+	    {
+	  for(i=0;i<n/THREADS;i++)
+	    buff[(n/THREADS)*(MYTHREAD)+i]+=result[MYTHREAD];
+	    }
+	} else {
+	  for(i=0;i<n/THREADS+(n-(n/THREADS)*THREADS);i++)
+	    buff[(n/THREADS)*(MYTHREAD)+i]+=result[MYTHREAD];
+	}
+    }
+
+  node_free(result,TH);
+}
+
+
+
+

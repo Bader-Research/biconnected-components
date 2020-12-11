@@ -1,0 +1,251 @@
+ 
+=============
+METRICS: seed is 568 
+METRICS: bicc_s done in 12.776025 s, found 78 comps
+2
+METRICS: seed is 568 
+METRICS:Time used for spanning tree is 26.431755 s
+METRICS:Time used for label twin edges is 2.033414 s
+METRICS:Time used for pick_tree edges is 2.420451 s
+METRICS: time used for sorting is 11.707161 s
+METRICS:Time used for construct euler path is 13.925117 s
+METRICS:Time used for rooting tree is 1.779789 s
+METRICS:Time for spanning_tree+euler_tour is 47.267425
+METRICS:Time used for preorder tree is 1.888193 s
+METRICS:Time used for size tree is 1.724825 s
+METRICS:Time used for Euler_get_lowhigh is 5.538294 s
+METRICS: time used for conn_comps is 8.354409 s
+METRICS:bicc_tv uses 71.980255 s
+METRICS:Time used for span-gw: 2.490997
+METRICS: time to set up correct children is 0.766269 
+METRICS: time used on local-dfs search is 1.713938 s
+METRICS: Time used on copying to appropriate location is 0.794284 s
+METRICS: Time for span_gw_euler is 5.783895
+METRICS:Time used for preorder tree is 0.731642 s
+METRICS:Time used for size tree is 0.766555 s
+METRICS:Time used for Euler_get_lowhigh is 5.163436 s
+METRICS: number of comp edges is 23067146
+METRICS:Time used for labeling comp edges is 6.068894 s
+METRICS: time used for conn_comps is 8.187329 s
+METRICS:bicc_rst uses 28.602491 s
+METRICS:Time used for span-gw: 2.490443
+METRICS: time to set up correct children is 0.983687 
+METRICS: time used on local-dfs search is 1.739106 s
+METRICS: Time used on copying to appropriate location is 0.820777 s
+METRICS: Time for span_gw_euler is 6.051963
+METRICS: Time for labeling tree edge in edge list is 1.619585
+METRICS: n_c_edges=1039411
+METRICS: filtering edges 3.496607
+METRICS:Time used for preorder tree is 0.741435 s
+METRICS:Time used for size tree is 0.791645 s
+METRICS:Time used for Euler_get_lowhigh_filter is 2.864293 s
+METRICS: number of comp edges got is 2829749
+METRICS: get comp edges 0.811141 s
+METRICS: connected_comp is 1.300510 s
+METRICS:bicc_filter uses 17.933466 s
+4
+METRICS: seed is 568 
+METRICS:Time used for spanning tree is 15.289972 s
+METRICS:Time used for label twin edges is 1.151948 s
+METRICS:Time used for pick_tree edges is 1.340906 s
+METRICS: time used for sorting is 6.414803 s
+METRICS:Time used for construct euler path is 7.884620 s
+METRICS:Time used for rooting tree is 1.002636 s
+METRICS:Time for spanning_tree+euler_tour is 27.185823
+METRICS:Time used for preorder tree is 1.120484 s
+METRICS:Time used for size tree is 1.031715 s
+METRICS:Time used for Euler_get_lowhigh is 3.097364 s
+METRICS: time used for conn_comps is 4.397696 s
+METRICS:bicc_tv uses 40.691047 s
+METRICS:Time used for span-gw: 1.590259
+METRICS: time to set up correct children is 0.401590 
+METRICS: time used on local-dfs search is 0.931486 s
+METRICS: Time used on copying to appropriate location is 0.583251 s
+METRICS: Time for span_gw_euler is 3.520926
+METRICS:Time used for preorder tree is 0.385372 s
+METRICS:Time used for size tree is 0.397099 s
+METRICS:Time used for Euler_get_lowhigh is 2.737421 s
+METRICS: number of comp edges is 23065676
+METRICS:Time used for labeling comp edges is 3.637342 s
+METRICS: time used for conn_comps is 4.286709 s
+METRICS:bicc_rst uses 15.952769 s
+METRICS:Time used for span-gw: 1.587897
+METRICS: time to set up correct children is 0.523421 
+METRICS: time used on local-dfs search is 0.904296 s
+METRICS: Time used on copying to appropriate location is 0.476075 s
+METRICS: Time for span_gw_euler is 3.506067
+METRICS: Time for labeling tree edge in edge list is 0.829480
+METRICS: n_c_edges=1039532
+METRICS: filtering edges 1.896771
+METRICS:Time used for preorder tree is 0.411061 s
+METRICS:Time used for size tree is 0.406685 s
+METRICS:Time used for Euler_get_lowhigh_filter is 1.744042 s
+METRICS: number of comp edges got is 2988550
+METRICS: get comp edges 0.427566 s
+METRICS: connected_comp is 0.749567 s
+METRICS:bicc_filter uses 10.114454 s
+6
+METRICS: seed is 568 
+METRICS:Time used for spanning tree is 10.135399 s
+METRICS:Time used for label twin edges is 0.844078 s
+METRICS:Time used for pick_tree edges is 1.032260 s
+METRICS: time used for sorting is 4.438679 s
+METRICS:Time used for construct euler path is 5.688122 s
+METRICS:Time used for rooting tree is 0.894003 s
+METRICS:Time for spanning_tree+euler_tour is 19.050708
+METRICS:Time used for preorder tree is 0.878819 s
+METRICS:Time used for size tree is 0.754261 s
+METRICS:Time used for Euler_get_lowhigh is 2.224753 s
+METRICS: time used for conn_comps is 3.882311 s
+METRICS:bicc_tv uses 29.596604 s
+METRICS:Time used for span-gw: 1.124494
+METRICS: time to set up correct children is 0.276129 
+METRICS: time used on local-dfs search is 0.651812 s
+METRICS: Time used on copying to appropriate location is 0.454458 s
+METRICS: Time for span_gw_euler is 2.523314
+METRICS:Time used for preorder tree is 0.267914 s
+METRICS:Time used for size tree is 0.282327 s
+METRICS:Time used for Euler_get_lowhigh is 1.934837 s
+METRICS: number of comp edges is 23059190
+METRICS:Time used for labeling comp edges is 2.579529 s
+METRICS: time used for conn_comps is 2.982656 s
+METRICS:bicc_rst uses 11.256255 s
+METRICS:Time used for span-gw: 1.125189
+METRICS: time to set up correct children is 0.361444 
+METRICS: time used on local-dfs search is 0.631460 s
+METRICS: Time used on copying to appropriate location is 0.339648 s
+METRICS: Time for span_gw_euler is 2.473914
+METRICS: Time for labeling tree edge in edge list is 0.569392
+METRICS: n_c_edges=1039569
+METRICS: filtering edges 1.389771
+METRICS:Time used for preorder tree is 0.320272 s
+METRICS:Time used for size tree is 0.292052 s
+METRICS:Time used for Euler_get_lowhigh_filter is 1.269160 s
+METRICS: number of comp edges got is 3041057
+METRICS: get comp edges 0.292177 s
+METRICS: connected_comp is 0.601569 s
+METRICS:bicc_filter uses 7.308924 s
+8
+METRICS: seed is 568 
+METRICS:Time used for spanning tree is 6.680271 s
+METRICS:Time used for label twin edges is 0.731120 s
+METRICS:Time used for pick_tree edges is 1.007226 s
+METRICS: time used for sorting is 3.936573 s
+METRICS:Time used for construct euler path is 5.062409 s
+METRICS:Time used for rooting tree is 0.714266 s
+METRICS:Time for spanning_tree+euler_tour is 14.619621
+METRICS:Time used for preorder tree is 0.671723 s
+METRICS:Time used for size tree is 0.622285 s
+METRICS:Time used for Euler_get_lowhigh is 1.729653 s
+METRICS: time used for conn_comps is 3.013853 s
+METRICS:bicc_tv uses 23.303848 s
+METRICS:Time used for span-gw: 0.804001
+METRICS: time to set up correct children is 0.216991 
+METRICS: time used on local-dfs search is 0.527387 s
+METRICS: Time used on copying to appropriate location is 0.418073 s
+METRICS: Time for span_gw_euler is 1.986290
+METRICS:Time used for preorder tree is 0.224078 s
+METRICS:Time used for size tree is 0.211023 s
+METRICS:Time used for Euler_get_lowhigh is 1.601428 s
+METRICS: number of comp edges is 23046398
+METRICS:Time used for labeling comp edges is 2.205438 s
+METRICS: time used for conn_comps is 2.995530 s
+METRICS:bicc_rst uses 9.764352 s
+METRICS:Time used for span-gw: 0.802850
+METRICS: time to set up correct children is 0.284006 
+METRICS: time used on local-dfs search is 0.479560 s
+METRICS: Time used on copying to appropriate location is 0.292477 s
+METRICS: Time for span_gw_euler is 1.878896
+METRICS: Time for labeling tree edge in edge list is 0.439280
+METRICS: n_c_edges=1039760
+METRICS: filtering edges 1.176428
+METRICS:Time used for preorder tree is 0.236095 s
+METRICS:Time used for size tree is 0.219818 s
+METRICS:Time used for Euler_get_lowhigh_filter is 1.092289 s
+METRICS: number of comp edges got is 3065582
+METRICS: get comp edges 0.223682 s
+METRICS: connected_comp is 0.463452 s
+METRICS:bicc_filter uses 5.812443 s
+10
+METRICS: seed is 568 
+METRICS:Time used for spanning tree is 6.774241 s
+METRICS:Time used for label twin edges is 0.696842 s
+METRICS:Time used for pick_tree edges is 0.941869 s
+METRICS: time used for sorting is 2.811109 s
+METRICS:Time used for construct euler path is 3.841669 s
+METRICS:Time used for rooting tree is 0.498719 s
+METRICS:Time for spanning_tree+euler_tour is 13.168097
+METRICS:Time used for preorder tree is 0.553076 s
+METRICS:Time used for size tree is 0.473643 s
+METRICS:Time used for Euler_get_lowhigh is 1.435027 s
+METRICS: time used for conn_comps is 3.016960 s
+METRICS:bicc_tv uses 21.432448 s
+METRICS:Time used for span-gw: 0.693777
+METRICS: time to set up correct children is 0.178748 
+METRICS: time used on local-dfs search is 0.443206 s
+METRICS: Time used on copying to appropriate location is 0.434132 s
+METRICS: Time for span_gw_euler is 1.775660
+METRICS:Time used for preorder tree is 0.201374 s
+METRICS:Time used for size tree is 0.174291 s
+METRICS:Time used for Euler_get_lowhigh is 1.325972 s
+METRICS: number of comp edges is 23024870
+METRICS:Time used for labeling comp edges is 1.731033 s
+METRICS: time used for conn_comps is 1.903961 s
+METRICS:bicc_rst uses 7.559709 s
+METRICS:Time used for span-gw: 0.696054
+METRICS: time to set up correct children is 0.233661 
+METRICS: time used on local-dfs search is 0.399272 s
+METRICS: Time used on copying to appropriate location is 0.284849 s
+METRICS: Time for span_gw_euler is 1.639514
+METRICS: Time for labeling tree edge in edge list is 0.361418
+METRICS: n_c_edges=1039780
+METRICS: filtering edges 0.982736
+METRICS:Time used for preorder tree is 0.201430 s
+METRICS:Time used for size tree is 0.176887 s
+METRICS:Time used for Euler_get_lowhigh_filter is 0.954819 s
+METRICS: number of comp edges got is 3080288
+METRICS: get comp edges 0.182583 s
+METRICS: connected_comp is 0.501676 s
+METRICS:bicc_filter uses 5.073571 s
+12
+METRICS: seed is 568 
+METRICS:Time used for spanning tree is 4.652307 s
+METRICS:Time used for label twin edges is 0.646917 s
+METRICS:Time used for pick_tree edges is 0.892369 s
+METRICS: time used for sorting is 2.550701 s
+METRICS:Time used for construct euler path is 3.539619 s
+METRICS:Time used for rooting tree is 0.467693 s
+METRICS:Time for spanning_tree+euler_tour is 10.596672
+METRICS:Time used for preorder tree is 0.497666 s
+METRICS:Time used for size tree is 0.435283 s
+METRICS:Time used for Euler_get_lowhigh is 1.260165 s
+METRICS: time used for conn_comps is 1.674994 s
+METRICS:bicc_tv uses 17.116804 s
+METRICS:Time used for span-gw: 0.563721
+METRICS: time to set up correct children is 0.153887 
+METRICS: time used on local-dfs search is 0.458184 s
+METRICS: Time used on copying to appropriate location is 0.264732 s
+METRICS: Time for span_gw_euler is 1.511404
+METRICS:Time used for preorder tree is 0.157251 s
+METRICS:Time used for size tree is 0.149346 s
+METRICS:Time used for Euler_get_lowhigh is 1.126726 s
+METRICS: number of comp edges is 22993858
+METRICS:Time used for labeling comp edges is 2.039617 s
+METRICS: time used for conn_comps is 2.141826 s
+METRICS:bicc_rst uses 7.515348 s
+METRICS:Time used for span-gw: 0.579213
+METRICS: time to set up correct children is 0.201995 
+METRICS: time used on local-dfs search is 0.321306 s
+METRICS: Time used on copying to appropriate location is 0.247478 s
+METRICS: Time for span_gw_euler is 1.384209
+METRICS: Time for labeling tree edge in edge list is 0.324272
+METRICS: n_c_edges=1039823
+METRICS: filtering edges 0.849279
+METRICS:Time used for preorder tree is 0.160832 s
+METRICS:Time used for size tree is 0.149471 s
+METRICS:Time used for Euler_get_lowhigh_filter is 0.787074 s
+METRICS: number of comp edges got is 3090105
+METRICS: get comp edges 0.338650 s
+METRICS: connected_comp is 0.373307 s
+METRICS:bicc_filter uses 4.436995 s
+    

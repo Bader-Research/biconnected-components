@@ -1,0 +1,405 @@
+=============
+1
+2
+METRICS:./Data/1m2_leda
+METRICS:Time for rooted_spanning_tree is 5.882339
+METRICS:Time used for spanning tree is 4.605596 s
+METRICS:Time used for label twin edges is 1.007564 s
+METRICS:Time used for pick_tree edges is 1.158581 s
+METRICS: time used for sorting is 12.585667 s
+METRICS:Time used for constuct euler path is 14.699908 s
+METRICS:Time used for rooting tree is 1.658647 s
+METRICS:Time for spanning_tree+euler_tour is 23.130573
+4
+6
+METRICS:./Data/1m2_leda
+METRICS:Time for rooted_spanning_tree is 2.190640
+METRICS:Time used for spanning tree is 2.122626 s
+METRICS:Time used for label twin edges is 0.419174 s
+METRICS:Time used for pick_tree edges is 0.726559 s
+METRICS: time used for sorting is 4.488275 s
+METRICS:Time used for constuct euler path is 5.750470 s
+METRICS:Time used for rooting tree is 0.775676 s
+METRICS:Time for spanning_tree+euler_tour is 9.794800
+8
+METRICS:./Data/1m2_leda
+METRICS:Time for rooted_spanning_tree is 1.913438
+METRICS:Time used for spanning tree is 1.876677 s
+METRICS:Time used for label twin edges is 0.323312 s
+METRICS:Time used for pick_tree edges is 0.665605 s
+METRICS: time used for sorting is 3.677751 s
+METRICS:Time used for constuct euler path is 4.813542 s
+METRICS:Time used for rooting tree is 0.666357 s
+METRICS:Time for spanning_tree+euler_tour is 8.345798
+10
+METRICS:./Data/1m2_leda
+METRICS:Time for rooted_spanning_tree is 1.827849
+METRICS:Time used for spanning tree is 1.283157 s
+METRICS:Time used for label twin edges is 0.274977 s
+METRICS:Time used for pick_tree edges is 0.796626 s
+METRICS: time used for sorting is 3.242509 s
+METRICS:Time used for constuct euler path is 4.419019 s
+METRICS:Time used for rooting tree is 0.537792 s
+METRICS:Time for spanning_tree+euler_tour is 7.311874
+12
+METRICS:./Data/1m2_leda
+METRICS:Time for rooted_spanning_tree is 2.169453
+METRICS:Time used for spanning tree is 2.228558 s
+METRICS:Time used for label twin edges is 0.384115 s
+METRICS:Time used for pick_tree edges is 0.723768 s
+METRICS: time used for sorting is 3.547494 s
+METRICS:Time used for constuct euler path is 4.707529 s
+METRICS:Time used for rooting tree is 0.716162 s
+METRICS:Time for spanning_tree+euler_tour is 8.760448
+    
+=============
+1
+2
+METRICS:./Data/1m4_leda
+METRICS:Time for rooted_spanning_tree is 8.720327
+METRICS:Time used for spanning tree is 6.692057 s
+METRICS:Time used for label twin edges is 1.493510 s
+METRICS:Time used for pick_tree edges is 1.662453 s
+METRICS: time used for sorting is 11.437567 s
+METRICS:Time used for constuct euler path is 13.529925 s
+METRICS:Time used for rooting tree is 1.717268 s
+METRICS:Time for spanning_tree+euler_tour is 25.095495
+4
+6
+METRICS:./Data/1m4_leda
+METRICS:Time for rooted_spanning_tree is 3.344977
+METRICS:Time used for spanning tree is 3.239428 s
+METRICS:Time used for label twin edges is 0.608645 s
+METRICS:Time used for pick_tree edges is 1.121382 s
+METRICS: time used for sorting is 4.833356 s
+METRICS:Time used for constuct euler path is 6.091395 s
+METRICS:Time used for rooting tree is 0.827338 s
+METRICS:Time for spanning_tree+euler_tour is 11.888474
+8
+METRICS:./Data/1m4_leda
+METRICS:Time for rooted_spanning_tree is 2.687861
+METRICS:Time used for spanning tree is 2.721823 s
+METRICS:Time used for label twin edges is 0.519791 s
+METRICS:Time used for pick_tree edges is 0.873042 s
+METRICS: time used for sorting is 3.760010 s
+METRICS:Time used for constuct euler path is 4.930356 s
+METRICS:Time used for rooting tree is 0.687118 s
+METRICS:Time for spanning_tree+euler_tour is 9.732416
+10
+12
+METRICS:./Data/1m4_leda
+METRICS:Time for rooted_spanning_tree is 3.100758
+METRICS:Time used for spanning tree is 3.098673 s
+METRICS:Time used for label twin edges is 0.528178 s
+METRICS:Time used for pick_tree edges is 0.936084 s
+METRICS: time used for sorting is 3.301924 s
+METRICS:Time used for constuct euler path is 4.514548 s
+METRICS:Time used for rooting tree is 0.821031 s
+METRICS:Time for spanning_tree+euler_tour is 9.898836
+    
+=============
+1
+2
+METRICS:./Data/1m3_kg
+METRICS:Time for rooted_spanning_tree is 2.104450
+METRICS:Time used for spanning tree is 2.148887 s
+METRICS:Time used for label twin edges is 0.580346 s
+METRICS:Time used for pick_tree edges is 0.847157 s
+METRICS: time used for sorting is 10.635639 s
+METRICS:Time used for constuct euler path is 12.302008 s
+METRICS:Time used for rooting tree is 1.294090 s
+METRICS:Time for spanning_tree+euler_tour is 17.172761
+4
+6
+METRICS:./Data/1m3_kg
+METRICS:Time for rooted_spanning_tree is 0.676657
+METRICS:Time used for spanning tree is 0.685598 s
+METRICS:Time used for label twin edges is 0.204202 s
+METRICS:Time used for pick_tree edges is 0.698834 s
+METRICS: time used for sorting is 4.237522 s
+METRICS:Time used for constuct euler path is 5.264140 s
+METRICS:Time used for rooting tree is 0.618441 s
+METRICS:Time for spanning_tree+euler_tour is 7.471525
+8
+METRICS:./Data/1m3_kg
+METRICS:Time for rooted_spanning_tree is 0.559454
+METRICS:Time used for spanning tree is 0.582355 s
+METRICS:Time used for label twin edges is 0.165562 s
+METRICS:Time used for pick_tree edges is 0.631683 s
+METRICS: time used for sorting is 3.583294 s
+METRICS:Time used for constuct euler path is 4.552896 s
+METRICS:Time used for rooting tree is 0.481923 s
+METRICS:Time for spanning_tree+euler_tour is 6.414729
+10
+METRICS:./Data/1m3_kg
+METRICS:Time for rooted_spanning_tree is 0.465916
+METRICS:Time used for spanning tree is 0.457016 s
+METRICS:Time used for label twin edges is 0.136536 s
+METRICS:Time used for pick_tree edges is 0.635461 s
+METRICS: time used for sorting is 2.755633 s
+METRICS:Time used for constuct euler path is 3.627309 s
+METRICS:Time used for rooting tree is 0.405901 s
+METRICS:Time for spanning_tree+euler_tour is 5.262551
+12
+METRICS:./Data/1m3_kg
+METRICS:Time for rooted_spanning_tree is 0.768101
+METRICS:Time used for spanning tree is 0.723650 s
+METRICS:Time used for label twin edges is 0.195052 s
+METRICS:Time used for pick_tree edges is 0.666924 s
+METRICS: time used for sorting is 3.309804 s
+METRICS:Time used for constuct euler path is 4.551044 s
+METRICS:Time used for rooting tree is 0.673083 s
+METRICS:Time for spanning_tree+euler_tour is 6.810084
+    
+=============
+1
+2
+METRICS:./Data/1m_torus
+METRICS:Time for rooted_spanning_tree is 1.198160
+METRICS:Time used for spanning tree is 1.159569 s
+METRICS:Time used for label twin edges is 0.581830 s
+METRICS:Time used for pick_tree edges is 0.927386 s
+METRICS: time used for sorting is 11.754672 s
+METRICS:Time used for constuct euler path is 13.185671 s
+METRICS:Time used for rooting tree is 1.229987 s
+METRICS:Time for spanning_tree+euler_tour is 17.084714
+4
+METRICS:./Data/1m_torus
+METRICS:Time for rooted_spanning_tree is 0.700768
+METRICS:Time used for spanning tree is 0.644345 s
+METRICS:Time used for label twin edges is 0.313197 s
+METRICS:Time used for pick_tree edges is 0.745043 s
+METRICS: time used for sorting is 6.149212 s
+METRICS:Time used for constuct euler path is 7.164345 s
+METRICS:Time used for rooting tree is 0.716130 s
+METRICS:Time for spanning_tree+euler_tour is 9.583352
+6
+8
+METRICS:./Data/1m_torus
+METRICS:Time for rooted_spanning_tree is 0.557510
+METRICS:Time used for spanning tree is 0.314366 s
+METRICS:Time used for label twin edges is 0.237413 s
+METRICS:Time used for pick_tree edges is 0.687200 s
+METRICS: time used for sorting is 3.137532 s
+METRICS:Time used for constuct euler path is 3.991530 s
+METRICS:Time used for rooting tree is 0.650983 s
+METRICS:Time for spanning_tree+euler_tour is 5.881785
+10
+METRICS:./Data/1m_torus
+METRICS:Time for rooted_spanning_tree is 0.467189
+METRICS:Time used for spanning tree is 0.237425 s
+METRICS:Time used for label twin edges is 0.142468 s
+METRICS:Time used for pick_tree edges is 0.660969 s
+METRICS: time used for sorting is 2.784039 s
+METRICS:Time used for constuct euler path is 3.596366 s
+METRICS:Time used for rooting tree is 0.494798 s
+METRICS:Time for spanning_tree+euler_tour is 5.132344
+12
+METRICS:./Data/1m_torus
+METRICS:Time for rooted_spanning_tree is 0.445974
+METRICS:Time used for spanning tree is 0.378465 s
+METRICS:Time used for label twin edges is 0.166524 s
+METRICS:Time used for pick_tree edges is 0.718324 s
+METRICS: time used for sorting is 2.836476 s
+METRICS:Time used for constuct euler path is 3.757323 s
+METRICS:Time used for rooting tree is 0.510108 s
+METRICS:Time for spanning_tree+euler_tour is 5.531161
+    
+=============
+1
+2
+METRICS:./Data/1m_rgb
+METRICS:Time for rooted_spanning_tree is 4.386179
+METRICS:Time used for spanning tree is 3.670722 s
+METRICS:Time used for label twin edges is 0.830963 s
+METRICS:Time used for pick_tree edges is 0.797596 s
+METRICS: time used for sorting is 11.357581 s
+METRICS:Time used for constuct euler path is 13.410091 s
+METRICS:Time used for rooting tree is 1.656744 s
+METRICS:Time for spanning_tree+euler_tour is 20.366384
+4
+6
+METRICS:./Data/1m_rgb
+METRICS:Time for rooted_spanning_tree is 2.178810
+METRICS:Time used for spanning tree is 1.565870 s
+METRICS:Time used for label twin edges is 0.327048 s
+METRICS:Time used for pick_tree edges is 0.682596 s
+METRICS: time used for sorting is 4.602096 s
+METRICS:Time used for constuct euler path is 5.804763 s
+METRICS:Time used for rooting tree is 0.886671 s
+METRICS:Time for spanning_tree+euler_tour is 9.267253
+8
+METRICS:./Data/1m_rgb
+METRICS:Time for rooted_spanning_tree is 1.647305
+METRICS:Time used for spanning tree is 1.224186 s
+METRICS:Time used for label twin edges is 0.258816 s
+METRICS:Time used for pick_tree edges is 0.627901 s
+METRICS: time used for sorting is 4.018430 s
+METRICS:Time used for constuct euler path is 5.065660 s
+METRICS:Time used for rooting tree is 0.640268 s
+METRICS:Time for spanning_tree+euler_tour is 7.817096
+10
+METRICS:./Data/1m_rgb
+METRICS:Time for rooted_spanning_tree is 1.311357
+METRICS:Time used for spanning tree is 1.701786 s
+METRICS:Time used for label twin edges is 0.216636 s
+METRICS:Time used for pick_tree edges is 0.629306 s
+METRICS: time used for sorting is 3.238910 s
+METRICS:Time used for constuct euler path is 4.419410 s
+METRICS:Time used for rooting tree is 0.521427 s
+METRICS:Time for spanning_tree+euler_tour is 7.488860
+12
+METRICS:./Data/1m_rgb
+METRICS:Time for rooted_spanning_tree is 1.720312
+METRICS:Time used for spanning tree is 1.864472 s
+METRICS:Time used for label twin edges is 0.248705 s
+METRICS:Time used for pick_tree edges is 0.654834 s
+METRICS: time used for sorting is 3.497133 s
+METRICS:Time used for constuct euler path is 4.639060 s
+METRICS:Time used for rooting tree is 0.706120 s
+METRICS:Time for spanning_tree+euler_tour is 8.113506
+    
+=============
+1
+2
+METRICS:./Data/r2d60_1m
+METRICS:Time for rooted_spanning_tree is 6.583345
+METRICS:Time used for spanning tree is 5.701963 s
+METRICS:Time used for label twin edges is 0.864736 s
+METRICS:Time used for pick_tree edges is 0.955802 s
+METRICS: time used for sorting is 12.461917 s
+METRICS:Time used for constuct euler path is 14.481849 s
+METRICS:Time used for rooting tree is 1.589240 s
+METRICS:Time for spanning_tree+euler_tour is 23.593856
+4
+6
+8
+10
+METRICS:./Data/r2d60_1m
+METRICS:Time for rooted_spanning_tree is 1.939296
+METRICS:Time used for spanning tree is 1.450817 s
+METRICS:Time used for label twin edges is 0.227595 s
+METRICS:Time used for pick_tree edges is 0.717546 s
+METRICS: time used for sorting is 3.345421 s
+METRICS:Time used for constuct euler path is 4.348480 s
+METRICS:Time used for rooting tree is 0.512021 s
+METRICS:Time for spanning_tree+euler_tour is 7.256750
+12
+METRICS:./Data/r2d60_1m
+METRICS:Time for rooted_spanning_tree is 2.584914
+METRICS:Time used for spanning tree is 2.491354 s
+METRICS:Time used for label twin edges is 0.249288 s
+METRICS:Time used for pick_tree edges is 0.694256 s
+METRICS: time used for sorting is 3.372262 s
+METRICS:Time used for constuct euler path is 4.552165 s
+METRICS:Time used for rooting tree is 0.687895 s
+METRICS:Time for spanning_tree+euler_tour is 8.675280
+    
+=============
+1
+2
+METRICS:./Data/r3d40_1m
+METRICS:Time for rooted_spanning_tree is 6.356398
+METRICS:Time used for spanning tree is 6.099401 s
+METRICS:Time used for label twin edges is 1.032664 s
+METRICS:Time used for pick_tree edges is 1.276050 s
+METRICS: time used for sorting is 12.326088 s
+METRICS:Time used for constuct euler path is 14.347231 s
+METRICS:Time used for rooting tree is 1.603816 s
+METRICS:Time for spanning_tree+euler_tour is 24.359426
+4
+6
+8
+METRICS:./Data/r3d40_1m
+METRICS:Time for rooted_spanning_tree is 1.933932
+METRICS:Time used for spanning tree is 1.775284 s
+METRICS:Time used for label twin edges is 0.358827 s
+METRICS:Time used for pick_tree edges is 0.725863 s
+METRICS: time used for sorting is 4.020227 s
+METRICS:Time used for constuct euler path is 5.162309 s
+METRICS:Time used for rooting tree is 0.672131 s
+METRICS:Time for spanning_tree+euler_tour is 8.694715
+10
+METRICS:./Data/r3d40_1m
+METRICS:Time for rooted_spanning_tree is 2.070656
+METRICS:Time used for spanning tree is 1.803565 s
+METRICS:Time used for label twin edges is 0.277378 s
+METRICS:Time used for pick_tree edges is 0.682731 s
+METRICS: time used for sorting is 3.081233 s
+METRICS:Time used for constuct euler path is 4.079685 s
+METRICS:Time used for rooting tree is 0.518959 s
+METRICS:Time for spanning_tree+euler_tour is 7.362614
+12
+METRICS:./Data/r3d40_1m
+METRICS:Time for rooted_spanning_tree is 2.669490
+METRICS:Time used for spanning tree is 2.520112 s
+METRICS:Time used for label twin edges is 0.296862 s
+METRICS:Time used for pick_tree edges is 0.773230 s
+METRICS: time used for sorting is 3.416576 s
+METRICS:Time used for constuct euler path is 4.612884 s
+METRICS:Time used for rooting tree is 0.700348 s
+METRICS:Time for spanning_tree+euler_tour is 8.903739
+    
+=============
+1
+2
+METRICS:./Data/1m_tsgb
+METRICS:Time for rooted_spanning_tree is 2.213408
+METRICS:Time used for spanning tree is 2.359444 s
+METRICS:Time used for label twin edges is 0.372542 s
+METRICS:Time used for pick_tree edges is 0.710408 s
+METRICS: time used for sorting is 10.682066 s
+METRICS:Time used for constuct euler path is 12.137887 s
+METRICS:Time used for rooting tree is 0.970433 s
+METRICS:Time for spanning_tree+euler_tour is 16.551161
+4
+METRICS:./Data/1m_tsgb
+METRICS:Time for rooted_spanning_tree is 1.025441
+METRICS:Time used for spanning tree is 0.912515 s
+METRICS:Time used for label twin edges is 0.161729 s
+METRICS:Time used for pick_tree edges is 0.652696 s
+METRICS: time used for sorting is 5.792252 s
+METRICS:Time used for constuct euler path is 6.796413 s
+METRICS:Time used for rooting tree is 0.607075 s
+METRICS:Time for spanning_tree+euler_tour is 9.130702
+6
+METRICS:./Data/1m_tsgb
+METRICS:Time for rooted_spanning_tree is 0.640494
+METRICS:Time used for spanning tree is 0.584894 s
+METRICS:Time used for label twin edges is 0.113324 s
+METRICS:Time used for pick_tree edges is 0.613911 s
+METRICS: time used for sorting is 4.409605 s
+METRICS:Time used for constuct euler path is 5.319635 s
+METRICS:Time used for rooting tree is 0.411131 s
+METRICS:Time for spanning_tree+euler_tour is 7.043187
+8
+METRICS:./Data/1m_tsgb
+METRICS:Time for rooted_spanning_tree is 0.535780
+METRICS:Time used for spanning tree is 0.461695 s
+METRICS:Time used for label twin edges is 0.086518 s
+METRICS:Time used for pick_tree edges is 0.597456 s
+METRICS: time used for sorting is 3.178569 s
+METRICS:Time used for constuct euler path is 4.135867 s
+METRICS:Time used for rooting tree is 0.325534 s
+METRICS:Time for spanning_tree+euler_tour is 5.607377
+10
+METRICS:./Data/1m_tsgb
+METRICS:Time for rooted_spanning_tree is 0.446606
+METRICS:Time used for spanning tree is 0.600498 s
+METRICS:Time used for label twin edges is 0.063876 s
+METRICS:Time used for pick_tree edges is 0.593618 s
+METRICS: time used for sorting is 2.930749 s
+METRICS:Time used for constuct euler path is 3.727728 s
+METRICS:Time used for rooting tree is 0.236416 s
+METRICS:Time for spanning_tree+euler_tour is 5.222412
+12
+METRICS:./Data/1m_tsgb
+METRICS:Time for rooted_spanning_tree is 0.712957
+METRICS:Time used for spanning tree is 0.581917 s
+METRICS:Time used for label twin edges is 0.106973 s
+METRICS:Time used for pick_tree edges is 0.623139 s
+METRICS: time used for sorting is 2.985679 s
+METRICS:Time used for constuct euler path is 3.922879 s
+METRICS:Time used for rooting tree is 0.369987 s
+METRICS:Time for spanning_tree+euler_tour is 5.605193
+    

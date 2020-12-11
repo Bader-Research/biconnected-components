@@ -1,0 +1,16 @@
+span_CRCW.c : spanning tree algorithm, SV
+span_gw.c: spanning tree algorithm, Graph walk
+span_gw_euler.c: new ways to construct euler tour by DFS
+euler.c: old ways to construct euler tour and tree computations
+
+bicc_tv.c: Tarjan and Vishkin's implementation. using sorting to set up the
+euler tours.
+
+bicc_cas: The same as bicc_tv.c except that the spinlocking version of spanning
+tree is used.
+
+bicc_filter: NEW. We found a spanning tree, then find a spanning forest from the
+non-tree edges. Prove that using the tree edges + forest edges is enough to find
+all the biconnected comps. Thus filtering out a lot of non-tree edges.
+helps: labeling edge pairs that should be considered in connected comps ; and
+get low-high.

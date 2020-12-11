@@ -1,0 +1,81 @@
+ 
+=============
+2
+METRICS: seed is -712456314 
+METRICS===span_gw:The difference between counts is 13953
+METRICS: time to set up correct children is 1.735092 
+METRICS: Time for span_gw_euler is 7.786005
+METRICS:Time for rooted_spanning_tree is 36.847475
+METRICS:Time used for spanning tree is 42.743790 s
+METRICS:Time used for label twin edges is 2.882705 s
+METRICS:Time used for pick_tree edges is 3.541835 s
+METRICS: time used for sorting is 10.665235 s
+METRICS:Time used for construct euler path is 12.879721 s
+METRICS:Time used for rooting tree is 2.205679 s
+METRICS:Time for spanning_tree+euler_tour is 64.254033
+4
+METRICS: seed is -712456314 
+METRICS===span_gw:The difference between counts is 5025
+METRICS: time to set up correct children is 1.238991 
+METRICS: Time for span_gw_euler is 5.019643
+METRICS:Time for rooted_spanning_tree is 22.604292
+METRICS:Time used for spanning tree is 19.080280 s
+METRICS:Time used for label twin edges is 1.613591 s
+METRICS:Time used for pick_tree edges is 2.010918 s
+METRICS: time used for sorting is 6.289533 s
+METRICS:Time used for construct euler path is 7.719343 s
+METRICS:Time used for rooting tree is 1.303913 s
+METRICS:Time for spanning_tree+euler_tour is 31.728332
+6
+METRICS: seed is -712456314 
+METRICS===span_gw:The difference between counts is 13817
+METRICS: time to set up correct children is 1.079084 
+METRICS: Time for span_gw_euler is 3.957796
+METRICS:Time for rooted_spanning_tree is 15.599296
+METRICS:Time used for spanning tree is 13.655542 s
+METRICS:Time used for label twin edges is 1.346100 s
+METRICS:Time used for pick_tree edges is 1.414833 s
+METRICS: time used for sorting is 4.213796 s
+METRICS:Time used for construct euler path is 5.514892 s
+METRICS:Time used for rooting tree is 1.152269 s
+METRICS:Time for spanning_tree+euler_tour is 23.084066
+8
+METRICS: seed is -712456314 
+METRICS===span_gw:The difference between counts is 7742
+METRICS: time to set up correct children is 0.992174 
+METRICS: Time for span_gw_euler is 3.354728
+METRICS:Time for rooted_spanning_tree is 12.517822
+METRICS:Time used for spanning tree is 10.033130 s
+METRICS:Time used for label twin edges is 1.249081 s
+METRICS:Time used for pick_tree edges is 1.183303 s
+METRICS: time used for sorting is 3.483316 s
+METRICS:Time used for construct euler path is 4.635305 s
+METRICS:Time used for rooting tree is 0.967274 s
+METRICS:Time for spanning_tree+euler_tour is 18.068579
+10
+METRICS: seed is -712456314 
+METRICS===span_gw:The difference between counts is 6956
+METRICS: time to set up correct children is 0.865244 
+METRICS: Time for span_gw_euler is 3.076529
+METRICS:Time for rooted_spanning_tree is 10.445944
+METRICS:Time used for spanning tree is 10.630346 s
+METRICS:Time used for label twin edges is 1.219727 s
+METRICS:Time used for pick_tree edges is 1.408433 s
+METRICS: time used for sorting is 3.061451 s
+METRICS:Time used for construct euler path is 4.174420 s
+METRICS:Time used for rooting tree is 0.705676 s
+METRICS:Time for spanning_tree+euler_tour is 18.139193
+12
+METRICS: seed is -712456314 
+METRICS===span_gw:The difference between counts is 167195
+METRICS: time to set up correct children is 0.742311 
+METRICS: Time for span_gw_euler is 2.965438
+METRICS:Time for rooted_spanning_tree is 12.553215
+METRICS:Time used for spanning tree is 11.966273 s
+METRICS:Time used for label twin edges is 1.243744 s
+METRICS:Time used for pick_tree edges is 1.338473 s
+METRICS: time used for sorting is 3.292458 s
+METRICS:Time used for construct euler path is 4.567153 s
+METRICS:Time used for rooting tree is 1.332615 s
+METRICS:Time for spanning_tree+euler_tour is 20.448553
+    
